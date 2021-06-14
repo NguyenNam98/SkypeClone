@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import {ConfigProvider } from 'react-avatar'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import leftFunc from './Pages/leftFunc';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  function App() {
+    const configAvatar = {
+
+    }
+    return (
+      <ConfigProvider {...configAvatar}>
+        <Router>
+          <div className='App'>
+            <Switch>
+              <Route path='/' exact component={leftFunc}/>
+            </Switch>
+          </div>
+         </Router>
+      </ConfigProvider>
+    );
+  }
 
 export default App;
