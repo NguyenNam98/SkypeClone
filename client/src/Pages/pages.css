@@ -1,7 +1,25 @@
-.leftfunc{
-    position : absolute;
-    width: 330px;
+.homepage{
+    position : relative;
+    width: 100%;
     height: 100%;
-    border: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+.homepage-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position : relative;
+    
+}
+.leftfunc{
+    width: 330px;
+    height: 610px;
+    border-right: 1px solid #ccc;
+   
+}
+.rightfunc{
+    width: 1000px;
+    height: 610px;
+    overflow: hidden;
    
 }

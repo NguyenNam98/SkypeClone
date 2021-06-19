@@ -4,7 +4,6 @@
     height: 36px;
     position: relative;
     font-family: 'SF Regular','Segoe UI Regular',sans-serif;
-    color: 333;
     margin: 5px;
 }
 .userinfo-container{
@@ -142,4 +141,78 @@
 .selectionchat-item i {
     color: #777;
     font-size: 18px;
+}
+/* recently chat css*/
+.recentlychat{
+    width: 330px;
+    height: 250px;
+    position: relative;
+   
+}
+.recentlychat-container{
+    width: 330px;
+    height: 250px;
+    position: absolute;
+   
+}
+.recentlychat-title{
+    width: 326px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ccc;
+    padding-left: 5px;
+}
+.recentlychat-text{
+    font-size: 12px;
+    font-weight: 600;
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    color: #777;
+    padding-right: 10px;
+}
+.recentlychat-title i {
+    color: #777;
+    font-weight: 600;
+}
+.recentlychat-conversation{
+    width: 326px;
+    height: 300px;
+    padding: 5px;
+    overflow: scroll;
+    cursor: pointer;
+}
+
+.recentlychat-info{
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.recentlychat-info:hover{
+    background-color: #CCFFFF;
+}
+.recentlychat-left{
+    display: flex;
+    width: 250px;
+    align-items: center;
+}
+.recentlychat-room{
+    padding-left: 15px;
+}
+.recentlychat-roomname{
+    color: rgb(37, 36, 35);
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    font-weight: 500;
+    line-height: 19px;
+    font-size: 16px;
+
+}
+.recentlychat-message{
+    color: #777;
+    font-size: 14px;
+}
+.recentlychat-time{
+    color: #777;
+    font-size: 14px;
 }

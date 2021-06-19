@@ -4,7 +4,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import leftFunc from './Pages/leftFunc';
+import homePage from './Pages/homePage';
 
   function App() {
     const configAvatar = {
@@ -15,7 +15,7 @@ import leftFunc from './Pages/leftFunc';
         <Router>
           <div className='App'>
             <Switch>
-              <Route path='/' exact component={leftFunc}/>
+              <Route path='/' exact component={homePage}/>
             </Switch>
           </div>
          </Router>
