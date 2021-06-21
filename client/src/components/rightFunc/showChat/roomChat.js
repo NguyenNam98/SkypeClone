@@ -1,13 +1,8 @@
 import React from 'react'
 import '../rightFunc.css'
-// import Avatar from 'react-avatar'
-// import avatarLink from '../../../public/avatar/avatar-test.jpg'
+import Message from './message';
 
 function roomChat() {
-    // let avatarConfig = {
-    //     round :true,
-    //     size : '120px',
-    // }
     const romchat ={
         id:1, roomName:'Chợ tám xuyên 24/24',
         users :[
@@ -34,7 +29,11 @@ function roomChat() {
               <div className = 'roomchat-navbar-left'>
                 <div className = 'roomchat-left-name'>{romchat.roomName}</div>
                 <div className = 'roomchat-left-info'>
-                    <div className = 'roomchat-left-numberuser'>{romchat.users.length} người dự</div>
+                    <div className = 'roomchat-left-numberuser'>
+                      <p>
+                        {romchat.users.length} người dự
+                      </p>
+                    </div>
                     <div className = 'roomchat-left-library'>
                         <i className="far fa-images"></i>
                         <p>Thư viện</p>
@@ -46,18 +45,33 @@ function roomChat() {
                 </div>
               </div>
               <div className = 'roomchat-navbar-right'>
-                <i className="fas fa-video"></i>
-                <i className="fas fa-phone-alt"></i>
-                <i className="fas fa-user-plus"></i>
+                <i className="fas fa-video nav-icon"></i>
+                <i className="fas fa-phone-alt nav-icon"></i>
+                <i className="fas fa-user-plus nav-icon"></i>
               </div>
           </div>
-          <div className = 'roomchat-message'></div>
+          <div className = 'roomchat-message'>
+            <Message messageLeft ={true}/>
+            <Message messageLeft ={false}/>
+            <Message messageLeft ={true}/>
+            <Message messageLeft ={false}/>
+            <Message messageLeft ={true}/>
+            <Message messageLeft ={false}/>
+            <Message messageLeft ={true}/>
+            <Message messageLeft ={false}/>
+          </div>
           <div className = 'roomchat-newmessage'>
-             <i className="far fa-grin-hearts"></i>
-             <input type= 'text' placeholder = 'Nhập tin nhắn'></input>
-             <i className="far fa-file-image"></i>
-             <i className="far fa-address-card"></i>
-             <i className="fas fa-microphone-alt"></i>
+            <div className = 'newmessage-left'>
+              <i className="far fa-grin-hearts"></i>
+              <input type= 'text' placeholder = 'Nhập tin nhắn' ></input>
+
+            </div>
+              <div className = 'newmessage-right'>
+                <i className="far fa-file-image"></i>
+                <i className="far fa-address-card"></i>
+                <i className="fas fa-microphone-alt"></i>
+                <i className="fas fa-ellipsis-h"></i>
+              </div>
           </div>
       </div>
     </div>
