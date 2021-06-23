@@ -305,13 +305,48 @@
     text-decoration: none;
 }
 .accountInfo-status{
+    position: relative;
+   
+}
+.account-status-item{
+    display: flex;
     height: 59px;
     width: 310px;
-    display: flex;
     justify-content: flex-start;
     align-items: center;
     border-bottom: 1px solid #ccc;
     cursor: pointer;
+}
+.status-dropdown{
+    position: absolute;
+    width: 194px;
+    height: 130px;
+    margin-top: 61px;
+    margin-left: 43px;
+    z-index: 5;
+    background-color:#fff;
+}
+.status-dropdown-container{
+    position: relative;
+    width: 194px;
+    height: 130px;
+    line-height: 2px;
+    background-color:#fff;
+    z-index: 6;
+}
+.status-dropdown-item {
+    display: flex;
+    color: #444;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 14px;
+    cursor: pointer;
+}
+.status-dropdown-item i{
+    padding-left: 20px;
+}
+.status-dropdown-item i.fas{
+    color: rgb(0, 120, 212);
 }
 .accountInfo-status i{
     color: rgb(77, 217, 101)

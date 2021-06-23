@@ -1,10 +1,15 @@
-import React from 'react'
+import React, {useState} from 'react'
 import '../leftFunc.css'
 import Avatar from 'react-avatar'
 import avatarLink from '../../../public/avatar/avatar-test.jpg'
 
-function accountInfo(props) {
+function AccountInfo(props) {
   const userInfo ={username :'Nguyễn Nam', gmail :'16522665@gmail.com.vn'}
+
+  const [ accountStatus, setAccountStatus] = useState(false)
+  const closeAccountStatus =() => { setAccountStatus(accountStatus => !accountStatus)}
+
+  const [numberStatus, setNumberStatus] = useState(1)
   let avatarConfig = {
     round :true,
     size : '72px'
@@ -23,6 +28,9 @@ function accountInfo(props) {
             <div className ='accountInfo-login'>Đăng xuất</div>
           </div>
           <div className ='accountInfo-user'>
+            {
+
+            }
               <div className ='accountInfo-user-avatar'>
                 <Avatar {...avatarConfig} src = {avatarLink}/>
               </div>
@@ -33,8 +41,45 @@ function accountInfo(props) {
               </div>
           </div>
           <div className ='accountInfo-status'>
-              <i className="fas fa-circle"></i>
-              <p>Đang hoạt động</p>
+              {
+                accountStatus === true &&
+                  <div className='status-dropdown'>
+                    <div className = 'status-dropdown-container'onClick ={closeAccountStatus} >
+                      <div className ='status-dropdown-item'
+                            onClick = {()=>setNumberStatus(1)}
+                            
+                      >
+                        <p>Đang hoạt động</p>
+                        {numberStatus===1 &&<i className="fas fa-check"></i> }
+                      </div>
+                      <div className ='status-dropdown-item'
+                          onClick = {()=>setNumberStatus(2)}
+                        
+                      >
+                        <p> Vắng mặt </p>
+                        {numberStatus===2 &&<i className="fas fa-check"></i> }
+                      </div>
+                      <div className ='status-dropdown-item'
+                          onClick = {()=>setNumberStatus(3)}
+                         
+                      >
+                        <p> Đừng làm phiền </p>
+                        {numberStatus===3 &&<i className="fas fa-check"></i> }
+                      </div>
+                      <div className ='status-dropdown-item' 
+                          onClick = {()=>setNumberStatus(4)}
+                      >
+                        <p>Ẩn</p>
+                        {numberStatus===4 &&<i className="fas fa-check"></i> }
+                      </div>
+                    </div>
+                  </div>
+                
+              }
+              <div className ='account-status-item' onClick ={closeAccountStatus}>
+                <i className="fas fa-circle"></i>
+                <p>Đang hoạt động</p>
+              </div>
             </div>
           <div className ='accountInfo-share'>
             <i className="fas fa-bullhorn"></i>
@@ -74,4 +119,4 @@ function accountInfo(props) {
   );
 }
   
-export default accountInfo
+export default AccountInfo
