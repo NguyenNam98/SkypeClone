@@ -221,7 +221,8 @@
   width: 1300px;
   height: 100vh;
   position: absolute;
-  z-index: 2;
+  z-index: 3;
+ 
 }
 .accountInfo-container{
     border: 1px solid #ccc;
@@ -231,8 +232,15 @@
     height: 100vh;
     margin-left: 40px;
     background-color: #fff;
-    z-index:3 ;
+    z-index: 4;
     position: relative;
+    
+}
+.accountInfo-over{
+    width: 1300px;
+    height: 100vh;
+    position: absolute;
+    z-index: 2;
 }
 .accountInfo-main{
     padding-left: 20px;
@@ -295,4 +303,133 @@
     font-weight: 400;
     margin-top: 10px;
     text-decoration: none;
+}
+.accountInfo-status{
+    height: 59px;
+    width: 310px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.accountInfo-status i{
+    color: rgb(77, 217, 101)
+}
+.accountInfo-status p{
+    padding-left: 25px;
+    font-size: 16px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    color: #333;
+}
+.accountInfo-share{
+    height: 59px;
+    width: 310px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.accountInfo-share i {
+    color: #333;
+    padding: 3px;
+}
+.accountInfo-share p {
+    color: #888;
+}
+.accountInfo-mark{
+    height: 59px;
+    width: 310px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.accountInfo-mark :hover{
+    opacity: 0.7;
+}
+.accountInfo-mark i{
+    font-size: 16px;
+}
+.accountInfo-mark p{
+    padding-left: 25px;
+    font-size: 16px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    color: #333;
+}
+.accountInfo-invite{
+    height: 59px;
+    width: 310px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    color: #111;
+}
+.accountInfo-invite :hover{
+    opacity: 0.7;
+}
+.accountInfo-invite p{
+    padding-left: 21px;
+    font-size: 16px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    font-weight: 800;
+}
+.accountInfo-manage{
+    padding-top: 5px;
+    text-transform: uppercase;
+    color: #777;
+    font-size: 12px;
+    font-weight: 900;
+}
+.accountInfo-appli{
+    height: 59px;
+    width: 310px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.accountInfo-appli:hover{
+    opacity: 0.7;
+}
+.accountInfo-appli p{
+    padding-left: 25px;
+    font-size: 15px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    color: #444;
+}
+.accountInfo-phone-call{
+    height: 59px;
+    width: 310px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    
+}
+.accountInfo-phone-call :hover{
+    opacity: 0.7;
+}
+.accountInfo-phone-text{
+    padding: 21px;
+    line-height: 10px;
+    cursor: pointer;
+}
+.accountInfo-phonenumber{
+    font-size: 15px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    color: #444;
+}
+.accountInfo-phone-fee{
+    font-size: 12px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    color: #777;
+}
+.accountInfo-phone-text i{
+    font-size: 16px;
 }

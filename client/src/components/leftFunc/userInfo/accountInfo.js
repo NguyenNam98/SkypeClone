@@ -10,9 +10,9 @@ function accountInfo(props) {
     size : '72px'
   }
   return (
-    <div className = 'accountInfo'
-          onClick={props.setCloseAccountInfo}
+    <div className = 'accountInfo'     
     >
+      <div className = 'accountInfo-over'  onClick={props.setCloseAccountInfo}></div>
       <div className = 'accountInfo-container'>
         <div className = 'accountInfo-main'>
           <div className ='accountInfo-head'>
@@ -33,47 +33,40 @@ function accountInfo(props) {
               </div>
           </div>
           <div className ='accountInfo-status'>
-              <i></i>
-              <p></p>
+              <i className="fas fa-circle"></i>
+              <p>Đang hoạt động</p>
             </div>
           <div className ='accountInfo-share'>
-            <i></i>
-            <p>Chia sẻ những gì bạn đang làm</p>
+            <i className="fas fa-bullhorn"></i>
+            <p>Chia sẻ những việc bạn đang làm</p>
+            <i className="fas fa-pen"></i>
           </div>
           <div className ='accountInfo-mark'>
-            <i></i>
+            <i className="far fa-bookmark"></i>
             <p>Thẻ đánh dấu</p>
           </div>
           <div className ='accountInfo-invite'>
-            <i></i>
+            <i className="fas fa-user-friends"></i>
             <p>Mời bạn</p>
           </div>
           <div className ='accountInfo-manage'>Quản lý</div>
           <div className ='accountInfo-appli'>
-            <i></i>
+            <i className="far fa-user"></i>
             <p>Hồ sơ Skype</p>
           </div>
-          <div className ='accountInfo-phone'>
-            <i></i>
-            <div className ='accountInfo-phone-text'>
-              <div className ='accountInfo-phone-call'>
-                Skype tới điện thoại
+          <div className ='accountInfo-phone-call'>
+              <i class="fab fa-phoenix-framework"></i>
+              <div className ='accountInfo-phone-text'>
+                <p className = 'accountInfo-phonenumber'>Skype tới điện thoại</p>
+                <p className = 'accountInfo-phone-fee'>Gọi điện với cước phí thấp</p>
               </div>
-              <div className ='accountInfo-phone-fee'>
-                Gọi điện với cước phí thấp
-              </div>
-            </div>
           </div>
-          <div className ='accountInfo-phone'>
-            <i></i>
-            <div className ='accountInfo-phone-text'>
-              <div className ='accountInfo-phone-call'>
-                Skype tới điện thoại
+          <div className ='accountInfo-phone-call'>
+              <i class="fas fa-phone-volume"></i>
+              <div className ='accountInfo-phone-text'>
+                <p className = 'accountInfo-phonenumber'>Số Skype</p>
+                <p className = 'accountInfo-phone-fee'>Nhập số thứ hai</p>
               </div>
-              <div className ='accountInfo-phone-fee'>
-                Gọi điện với cước phí thấp
-              </div>
-            </div>
           </div>
         </div>
       </div>

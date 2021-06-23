@@ -20,11 +20,9 @@ function UserInfo () {
         openAccountInfo === true && <AccountInfo setCloseAccountInfo ={setCloseAccountInfo} openAccountInfo = {openAccountInfo}/>
       }
       <div className = 'userinfo-container'>
-        <div className = 'userinfo-left'
-          onClick ={setCloseAccountInfo}
-        >
-          <Avatar {...avatarConfig} src = {avatarLink}/>
-          <div className = 'userinfo-username'>{userName}</div>
+        <div className = 'userinfo-left'>
+          <Avatar {...avatarConfig} src = {avatarLink}  onClick ={setCloseAccountInfo}/>
+          <div className = 'userinfo-username'  onClick ={setCloseAccountInfo}>{userName} </div>
           <div className = 'userinfo-money'>${money}</div>
         </div>
         <div className ='userinfo-more'>
