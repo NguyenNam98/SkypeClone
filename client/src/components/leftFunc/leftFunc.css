@@ -244,7 +244,6 @@
 }
 .accountInfo-main{
     padding-left: 20px;
-   
 }
 .accountInfo-head{
     height: 59px;
@@ -348,8 +347,14 @@
 .status-dropdown-item i.fas{
     color: rgb(0, 120, 212);
 }
-.accountInfo-status i{
+.accountInfo-status .fa-circle{
     color: rgb(77, 217, 101)
+}
+.accountInfo-status .fa-clock{
+    color: #FFCC33
+}
+.accountInfo-status .fa-ban{
+    color: red;
 }
 .accountInfo-status p{
     padding-left: 25px;
@@ -467,4 +472,95 @@
 }
 .accountInfo-phone-text i{
     font-size: 16px;
+}
+/* share story css*/
+.share-story{
+    padding-left: 20px;
+}
+.sharestory-head{
+    display: flex;
+    height: 59px;
+    width: 310px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+.button-done{
+    display: flex;
+    width: 60px;
+    height: 28px;
+    border-radius: 20px;
+    background-color: rgb(0, 120, 212);
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
+}
+ .fa-long-arrow-alt-left{
+    font-size: 19px;
+    color: #444;
+    cursor: pointer;
+}
+.sharestory-input-title{
+    display: flex;
+    height: 50px;
+    width: 310px;
+    align-items: flex-end;
+    font-size: 17px;
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 700;
+    color: rgb(37, 36, 35);
+}
+.sharestory-input-text{
+    display: flex;
+    height: 59px;
+    width: 310px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+.sharestory-input-text i{
+    cursor: pointer;
+}
+.sharestory-input-text input{
+    width: 220px;
+    outline: none;
+    border: none;
+   
+}
+::placeholder{
+    color: #999;
+    font-size: 15px;
+}
+.sharestory-mention{
+    display: flex;
+    height: 54px;
+    width: 310px;
+    font-size: 12px;
+    color: rgb(138, 141, 145);
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 700;
+    align-items: center;
+
+    text-transform: uppercase;
+}
+.sharestory-action-item{
+    display: flex;
+    height: 49px;
+    width: 310px;
+    justify-content:flex-start;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.sharestory-action-item .far{
+    color: #FFCC33;
+    padding-right: 20px;
+    font-size: 16px;
+}
+.sharestory-action{
+    height: 390px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
