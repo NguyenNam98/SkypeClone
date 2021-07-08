@@ -6,8 +6,8 @@ import AccountInfo from './userInfo/accountInfo'
 
 function UserInfo () {
   const [openAccountInfo, setAccountInfo ] = useState(false)
-  const setCloseAccountInfo =() => { setAccountInfo(openAccountInfo => !openAccountInfo)
-  }
+  const setCloseAccountInfo =() => { setAccountInfo(openAccountInfo => !openAccountInfo)}
+ 
   let userName = 'nguyennam'
   let money = 1818181
   let avatarConfig = {
@@ -26,6 +26,7 @@ function UserInfo () {
           <div className = 'userinfo-money'>${money}</div>
         </div>
         <div className ='userinfo-more'>
+            
             <i className="fas fa-ellipsis-h"></i>
         </div>
       </div>
