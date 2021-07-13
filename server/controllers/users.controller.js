@@ -24,7 +24,6 @@ module.exports.createUser = async function(req, res){
   let existPhone = false
   await users.get().then(snap=>{
     snap.forEach(doc =>{
-      console.log(doc.data().phoneNumber);
     if(doc.data().phoneNumber === req.body.phoneNumber){
       existPhone = true
     }
@@ -43,37 +42,43 @@ module.exports.createUser = async function(req, res){
       users.add(userData)
     });
   
-   
-    
     res.status(200).send(' add user successfull')
   }
   
 }
 
-module.exports.getGroups = async function(req, res){
+module.exports.getGroupsInfoUser = async function(req, res){
+  if(!req.body){
+    res.status(404).send('Not found user')
+  }
   var idUser = req.body.idUser
   var roomChat = []
-  var idRoomChat = []
-  await users.doc(idUser).collection('roomChat').get().then(snap =>{
-    snap.forEach(doc =>{
-      roomChat.push(doc.data())
-      idRoomChat.push(doc.id)
-    })
-  })
-  res.send(roomChat)
-
-}
-module.exports.createGroup = async function (req, res){
-  const dataGroup = req.body
-  const idUser = req.params.idUser
   const user = await users.doc(idUser)
-  const check = await user.get();
+  const check = await user.get()
   if(check.exists){
-    await user.collection('roomChat').add(dataGroup)
-    res.status(200).send('add group successfull')
-    
+    await user.collection('roomChat').get().then(snap =>{
+      snap.forEach( doc => {
+        roomChat.push(doc.data())
+      })
+    })
+    res.status(200).send(roomChat)
+
   }else{
-    res.status(403).send('unsuccess to add group')
+    res.status(404).send('Not found user')
   }
 
 }
+// module.exports.createGroup = async function (req, res){
+//   const dataGroup = req.body
+//   const idUser = req.params.idUser
+//   const user = await users.doc(idUser)
+//   const check = await user.get();
+//   if(check.exists){
+//     await user.collection('roomChat').add(dataGroup)
+//     res.status(200).send('add group successfull')
+    
+//   }else{
+//     res.status(403).send('unsuccess to add group')
+//   }
+
+// }
