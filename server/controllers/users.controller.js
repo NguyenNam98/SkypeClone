@@ -24,9 +24,9 @@ module.exports.createUser = async function(req, res){
   let existPhone = false
   await users.get().then(snap=>{
     snap.forEach(doc =>{
-    if(doc.data().phoneNumber === req.body.phoneNumber){
-      existPhone = true
-    }
+      if(doc.data().phoneNumber === req.body.phoneNumber){
+        existPhone = true
+      }
     })
   })
   if(existPhone === true){

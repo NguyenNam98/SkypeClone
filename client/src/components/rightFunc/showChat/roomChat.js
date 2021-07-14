@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import '../rightFunc.css'
 import Message from './message';
+import socketIOClient from "socket.io-client";
+const ENDPOINT ="http://127.0.0.1:8080"
 
-function roomChat() {
+
+function  RoomChat() {
+  
+    const socket = socketIOClient(ENDPOINT);
+    socket.on("xin", data => {
+      console.log(data);
+    });
+
     const romchat ={
         id:1, roomName:'Chợ tám xuyên 24/24',
         users :[
@@ -78,4 +87,4 @@ function roomChat() {
   );
 }
   
-export default roomChat
+export default RoomChat

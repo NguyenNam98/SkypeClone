@@ -28,7 +28,7 @@ io.on('connection',async (socket)=>{
 })
 
 app.use('/user',userRoute)
-app.use('/messages',messageRoute)
+app.use('/message',messageRoute)
 app.use('/group', groupRoute)
 
 
