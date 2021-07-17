@@ -37,8 +37,8 @@
 }
 .loginpage-main{
     width: 440px;
-    height: 400px;
-    margin: 50px auto;
+    height: 500px;
+    margin: 20px auto;
 }
 .loginpage-logo{
     text-align: center;
@@ -50,7 +50,7 @@
 }
 .loginpage-info{
     position: relative;
-    height: 360px;
+    height: 90%;
     border: 1px solid #ccc;
     box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
@@ -80,25 +80,38 @@
     padding-bottom: 20px;
 }
 .loginpage-title-large{
-    font-size: 24px;
+    font-size: 25px;
     color: #222;
-    font-weight: 700;
+    font-weight: 800;
     
 }
 .loginpage-title-small{
-    font-size: 13px;
+    padding-top: 5px;
+    font-size: 14px;
     color: #444;
 }
 .loginpage-input{
-    border-bottom: 1px solid #555;
+    
+    display: flex;
 }
-.loginpage-input input{
+.loginpage-input .input-phone{
     border: none;
     padding-bottom: 5px;
     outline: none;
-    width: 90%;
+    width: 60%;
     font-size: 15px;
     color: #555;
+    border-bottom: 1px solid #555;
+}
+.loginpage-input .input-country{
+    border: none;
+    padding-bottom: 5px;
+    outline: none;
+    width: 15%;
+    font-size: 15px;
+    color: #555;
+    margin-right: 10px;
+    border-bottom: 1px solid #555;
 }
 .loginpage-create{
     padding-top: 10px;
@@ -217,4 +230,11 @@
 .loginpage-wrongalert a:hover{
     color: #0067b8;
     text-decoration: underline;
+}
+.signup-title-small{
+    padding-bottom: 20px;
+}
+.signup-quote{
+    font-size: 14px;
+    padding-bottom: 10px;
 }

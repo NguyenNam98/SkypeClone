@@ -1,5 +1,9 @@
 import React,{useState} from 'react'
+import {
 
+    Link
+
+  } from "react-router-dom";
 
 function LoginPage() {
     const [passSide, setPassSide]= useState(false)
@@ -33,16 +37,18 @@ function LoginPage() {
                                 <div className ='loginpage-wrongalert'>
                                     That Microsoft account doesn't exist. Enter a different account or
                                     <a href="http://shs"> get a new one</a>.
+                                    
                                 </div>
                             }
                             <div className ='loginpage-input'>
-                                <input type ='text' value ={gmail}
+                                <input className ="input-phone" type ='text' placeholder =" Email, phone or Skype" value ={gmail}
                                 onChange= {e => setGmail(e.target.value)}
                                 />
                             </div>
                             <div className ='loginpage-create'>
                                 <p>No account ?</p>
-                                <a href="http://shs">Create one!</a>
+                                <Link to ="/signup" href="http://">Create one!</Link>
+                                
                             </div>
                             <div className ='loginpage-bykey'>
                                 <p>Sign in with security key </p>
@@ -71,7 +77,7 @@ function LoginPage() {
                                 </div>
                             }
                             <div className ='loginpage-input'>
-                                <input type ='password' 
+                                <input type ='password' className ="input-phone" placeholder =" Enter your password"
                                 value ={password}
                                 onChange= {e => setPassword(e.target.value)}
                                 />

@@ -1,2 +1,4 @@
 client/node_modules
 .gitignore
+server/models/config/firebaseKey.json
+server/node_modules
