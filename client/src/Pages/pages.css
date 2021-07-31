@@ -1,0 +1,240 @@
+.homepage{
+    position : relative;
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid #ccc;
+  
+}
+
+.homepage-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position : absolute;
+    
+}
+.leftfunc{
+    width: 330px;
+    height: 610px;
+    border-right: 1px solid #ccc;
+    
+}
+.rightfunc{
+    width: 1000px;
+    height: 610px;
+   
+   
+}
+/* login page css */
+.loginpage{
+    width: 100%;
+    height: 100%;
+}
+.loginpage-container{
+    width: 100%;
+    height: 100%;
+    
+}
+.loginpage-main{
+    width: 440px;
+    height: 500px;
+    margin: 20px auto;
+}
+.loginpage-logo{
+    text-align: center;
+    font-size: 50px;
+    padding-bottom: 10px;
+}
+.loginpage-logo .fab{
+    color:rgb(0,175,240);
+}
+.loginpage-info{
+    position: relative;
+    height: 90%;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+}
+.loginpage-info-header{
+    display: flex;
+    padding: 30px 0 0 40px;
+    justify-content: flex-start;
+    align-items: center;
+    height: 44px;
+}
+.loginpage-info-header i{
+    font-size: 30px;
+    padding-right: 14px;
+    color:rgb(0,175,240);
+}
+.loginpage-info-header p{
+    font-size: 24px;
+    color: #666;
+    font-weight: 700;
+}
+.loginpage-side{
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.loginpage-title{
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+.loginpage-title-large{
+    font-size: 25px;
+    color: #222;
+    font-weight: 800;
+    
+}
+.loginpage-title-small{
+    padding-top: 5px;
+    font-size: 14px;
+    color: #444;
+}
+.loginpage-input{
+    
+    display: flex;
+}
+.loginpage-input .input-phone{
+    border: none;
+    padding-bottom: 5px;
+    outline: none;
+    width: 60%;
+    font-size: 15px;
+    color: #555;
+    border-bottom: 1px solid #555;
+}
+.loginpage-input .input-country{
+    border: none;
+    padding-bottom: 5px;
+    outline: none;
+    width: 15%;
+    font-size: 15px;
+    color: #555;
+    margin-right: 10px;
+    border-bottom: 1px solid #555;
+}
+.loginpage-create{
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+}
+.loginpage-create p{
+    color: #444;
+}
+.loginpage-create a {
+    padding-left: 5px;
+    text-decoration: none;
+    color: #0067b8;
+}
+.loginpage-bykey{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.loginpage-bykey p{
+    color: #0067b8;
+    font-size: 14px;
+    padding-right: 3px;
+}
+.loginpage-button{
+    position: absolute;
+    display: flex;
+    width: 120px;
+    height: 35px;
+    background-color: #0067b8;
+    border-color: #0067b8;
+    color: #fff;
+    right: 40px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+}
+.loginpage-button:hover {
+    opacity: 0.8;
+}
+.loginpage-footer{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #666;
+    color:#fff;
+    height: 30px;
+    font-size: 13px;
+    bottom: 0px;
+    width: 99%;
+    
+
+}
+.loginpage-footer i{
+    padding-right: 20px;
+    cursor: pointer;
+}
+.loginpage-footer p{
+    padding-right: 20px;
+    cursor: pointer;
+}
+.loginpage-gmail{
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+}
+.loginpage-gmail i{
+    color: #666;
+    padding-right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.loginpage-gmail p{
+    color: #333;
+    font-size: 15px;
+    
+}
+.loginpage-enter-pass {
+    font-size: 26px;
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+.loginpage-keep{
+    display: flex;
+    align-items: center;
+}
+.loginpage-keep input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    
+}
+.loginpage-keep p{
+   padding-left: 10px;
+   color: #444;
+}
+.loginpage-link{
+    padding-bottom: 12px;
+
+}
+.loginpage-link a {
+    text-decoration: none;
+    color: #0067b8;
+    font-size: 14px;
+}
+.loginpage-wrongalert{
+    color: #e81123;
+    font-size: 14px;
+}
+.loginpage-wrongalert a{
+    color: #0067b8;
+    text-decoration: none;
+}
+.loginpage-wrongalert a:hover{
+    color: #0067b8;
+    text-decoration: underline;
+}
+.signup-title-small{
+    padding-bottom: 20px;
+}
+.signup-quote{
+    font-size: 14px;
+    padding-bottom: 10px;
+}

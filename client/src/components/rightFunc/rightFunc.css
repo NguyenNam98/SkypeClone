@@ -1,0 +1,295 @@
+/* welcome css*/
+.welcome{
+    width: 1000px;
+    height: 600px;
+    position: relative;
+    font-family: 'SF Regular','Segoe UI Regular',sans-serif;
+    margin: 5px;
+}
+.welcome-container{
+    width: 1000px;
+    height: 600px;
+    position: absolute;
+    padding: 40px 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.welcome-title{
+    align-items: center;
+    font-size: 40px;
+    color: #000;
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 750;
+    
+}
+.welcome-avatar{
+    padding-top: 30px;
+}
+.welcome-thinking{
+    display: flex;
+    padding-top: 30px;
+    width: 40%;
+    border-bottom: 1px solid #ccc;
+   justify-content: flex-end;
+   cursor: pointer;
+   font-size: 20px;
+   color: #777;
+}
+.welcome-thinking input{
+    outline: none;
+    border: none;
+    padding-bottom: 10px;
+    width: 70%;
+    color: #777;
+    font-size: 15px;
+   
+}
+
+.welcome-start{
+    width: 240px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(43, 44, 51);
+    border-radius: 20px;
+    margin-top: 40px;
+    color: #fff;
+    cursor: pointer;
+}
+.welcome-text{
+    color: #fff;
+    font-size: 16px;
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 500;
+}
+.welcome-description{
+    width: 350px;
+    height: 60px;
+    margin-top: 30px;
+   text-align: center;
+   font-size: 15px;
+    color: #777;
+    font-weight: 400;
+}
+.welcome-notice {
+  margin-top: 80px;
+  color:rgb(43, 44, 51);
+  font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+.welcome-notice a{
+    color:rgb(43, 44, 51);
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding-left: 5px;
+}
+/*roomchat css*/
+.roomchat{
+    width: 1000px;
+    height: 600px;
+    position: relative;
+    font-family: 'SF Regular','Segoe UI Regular',sans-serif;
+    
+}
+.roomchat-container{
+    width: 1000px;
+    height: 600px;
+    position: absolute;
+}
+.roomchat-navbar{
+    width: 1000px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding-top: 20px;
+    line-height: 15px;
+}
+.roomchat-navbar-left{
+     height: 100%;
+     padding-left: 20px;
+}
+
+.roomchat-left-name{
+    color: #000;
+    font-size: 24px;
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 600;
+    white-space: pre;
+    text-overflow: ellipsis;
+    color: #333;
+}
+.roomchat-left-info{
+    display: flex;
+}
+.roomchat-left-numberuser{
+    display: flex;
+    align-items: center;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    color: rgb(138, 141, 145);
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 400;  
+    cursor: pointer;
+  
+}
+.roomchat-left-numberuser p{
+    width: 70px;
+    border-right: 2px solid rgb(138, 141, 145);
+    align-items: center;
+    
+}
+.roomchat-left-library{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    color: rgb(138, 141, 145);
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 400; 
+    padding-left: 10px;
+    cursor: pointer;
+}
+.roomchat-left-library p{
+    width: 60px;
+    border-right: 2px solid rgb(138, 141, 145);
+   
+}
+.roomchat-left-search{
+    display: flex;
+    align-items: center;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    color: rgb(138, 141, 145);
+    font-family: "SF Bold", "Segoe System UI Bold", "Segoe UI Bold", sans-serif;
+    font-weight: 400; 
+    padding-left: 10px;
+    cursor: pointer;
+}
+.roomchat-left-search p{
+    width: 60px;
+}
+.roomchat-navbar-right{
+    display: flex;
+    width: 140px;
+    justify-content: space-evenly;
+    padding-bottom: 20px;
+   
+}
+.roomchat-navbar-right i{
+    color: #333
+}
+.roomchat-navbar-right .nav-icon{
+    font-size: 18px;
+    cursor: pointer;
+}
+.roomchat-message{
+    width: 1005px;
+    height: 460px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+.roomchat-newmessage{
+    display: flex;
+    width: 1000px;
+    display: flex;
+    justify-content: space-around;
+}
+.newmessage-left{
+    display: flex;
+    padding-left: 50px;
+
+}
+.newmessage-left input{
+    width: 600px;
+    margin-left: 20px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+}
+.newmessage-left i{
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+}
+.newmessage-right{
+    display: flex;
+    width: 160px;
+    justify-content: space-around;
+    font-size: 18px;
+    color: #333;
+}
+.newmessage-right i{
+    cursor: pointer;
+}
+/* message css*/
+.message{
+    position: relative;
+    width: 960px;
+}
+.message-container{
+    width: 960px;
+    position: relative;
+    margin: 25px;
+}
+.message-left{
+    display: flex;
+   
+    
+}
+.message-detail{
+    padding-left: 10px;
+}
+.message-info{
+    display: flex;
+    font-size: 12px;
+    color: rgb(138, 141, 145);
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+}
+.message-text{
+    width: 638px;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.2px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    color: rgb(37, 36, 35);
+    padding-left: 20px;
+    padding-top: 15px;
+}
+.message-right{
+  
+    width: 960px;
+    margin-bottom: 10px ; 
+}
+.message-right-detail{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: end;
+}
+.message-right-time{
+    font-size: 12px;
+    color: rgb(138, 141, 145);
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+}
+.message-right-text{
+  
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.2px;
+    font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
+    color: rgb(37, 36, 35);
+    padding-left: 20px;
+    padding: 5px;
+    background-color: rgb(219, 244, 253);
+    
+}
