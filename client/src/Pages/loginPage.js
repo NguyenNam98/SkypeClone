@@ -1,20 +1,30 @@
 import React,{useState} from 'react'
+import { withRouter } from "react-router-dom";
 import {
-
     Link
-
   } from "react-router-dom";
 
 function LoginPage() {
     const [passSide, setPassSide]= useState(false)
-    const switchPassSide = ()=> {
-        setPassSide(passSide => !passSide)
-    }
+    // const switchPassSide = ()=> {
+    //     setPassSide(passSide => !passSide)
+    // }
     const [gmail, setGmail]= useState('')
     const [password, setPassword]= useState('')
     const [wrongAlertPass, setWrongAlertPass] = useState(false)
     const [wrongAlertName, setWrongAlertName] = useState(false)
-    
+    const validateUserInput =()=>{
+        let formatGmail = new RegExp(/^[\w.+\-]+@gmail\.com$/)
+        let formatPhone = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/)
+        if(!gmail || !formatGmail.test(gmail)&& !formatPhone.test(gmail)){
+            setPassSide(false)
+            setWrongAlertName(true)
+        }else{
+            setWrongAlertName(false)
+            setPassSide(true)
+        }
+
+    }
   return (
     <div className = 'loginpage'>
         <div className = 'loginpage-container'>
@@ -36,13 +46,15 @@ function LoginPage() {
                             { wrongAlertName === true &&
                                 <div className ='loginpage-wrongalert'>
                                     That Microsoft account doesn't exist. Enter a different account or
-                                    <a href="http://shs"> get a new one</a>.
-                                    
+                                    <Link to="/signup"> get a new one</Link>. 
                                 </div>
                             }
                             <div className ='loginpage-input'>
-                                <input className ="input-phone" type ='text' placeholder =" Email, phone or Skype" value ={gmail}
+                                <input className ="input-phone" type ='text' 
+                                placeholder =" Email, phone or Skype" 
+                                value ={gmail}
                                 onChange= {e => setGmail(e.target.value)}
+                                
                                 />
                             </div>
                             <div className ='loginpage-create'>
@@ -55,7 +67,7 @@ function LoginPage() {
                                 <i className="far fa-question-circle"></i>
                             </div>
                             <div className ='loginpage-button'
-                                onClick ={switchPassSide}
+                                onClick ={validateUserInput}
                             >
                                 Next
                             </div>
@@ -65,7 +77,7 @@ function LoginPage() {
                         <div className ='loginpage-side'>
                             <div className ='loginpage-gmail'>
                                 <i className="fas fa-arrow-left"
-                                    onClick ={switchPassSide}
+                                    onClick ={()=>{setPassSide(false)}}
                                 ></i>
                                 <p>{gmail}</p>
                             </div>
@@ -93,8 +105,7 @@ function LoginPage() {
                             <div className ='loginpage-link'>
                                 <a href ="http://google.com">Other ways to sign in</a>
                             </div>
-                            <div className ='loginpage-button'
-                                
+                            <div className ='loginpage-button'  
                             >
                                 Sign in
                             </div>
@@ -114,4 +125,4 @@ function LoginPage() {
   );
 }
   
-export default LoginPage
+export default withRouter( LoginPage)

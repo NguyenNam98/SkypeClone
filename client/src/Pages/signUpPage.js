@@ -1,7 +1,13 @@
 import React,{useState} from 'react'
+import { withRouter } from "react-router-dom";
+import Axios from 'axios'
 
+const host = process.env.REACT_APP_HOST
+console.log( process.env)
+const port = process.env.REACT_APP_PORT || 8080
 
-function SignUpPage() {
+function SignUpPage(props) {
+    
     const [passSide, setPassSide]= useState(false)
     const switchPassSide = ()=> {
         setPassSide(passSide => !passSide)
@@ -12,6 +18,7 @@ function SignUpPage() {
     const [phoneAproach, setPhoneAprpoach] = useState(false)
     const [wrongAlertPass, setWrongAlertPass] = useState(false)
     const [wrongAlertName, setWrongAlertName] = useState(false)
+    const [showPass, setShowPass]= useState(false)
 
     const changePhoneAproach = ()=>{
         setPhoneAprpoach(phoneAproach => !phoneAproach)
@@ -26,8 +33,7 @@ function SignUpPage() {
         if(!gmail || !formatGmail.test(gmail)){
             setError(' Enter the email address in the format someone@example.com.')
             setWrongAlertName(true)
-        }else{
-            
+        }else{    
             setWrongAlertName(false)
             setPassSide(true)
         }
@@ -35,7 +41,48 @@ function SignUpPage() {
     }
     const validatePhone =()=>{
         let formatPhone = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/)
-        if(!password || !formatPhone.test(password)){}
+        if(!phonenumber || !formatPhone.test(phonenumber)){
+            setError("The phone number you entered isn't valid. Your phone number can contain numbers, spaces, and these special characters: ( ) [ ] . - * /")
+            setWrongAlertName(true)
+        }else{
+            setWrongAlertName(false)
+            setPassSide(true)
+        }
+    }
+    const validatePassword =()=>{
+        let formatPassword = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+        if(!password || !formatPassword.test(password)){
+            setError(" Passwords must have at least 8 characters and contain at least two of the following: uppercase letters, lowercase letters, numbers, and symbols.")
+            setWrongAlertPass(true)
+        }else{
+            let userData ={}
+            if(!phonenumber){
+              userData ={
+                gmail:gmail,
+                password:password
+              }
+            }else{
+              userData ={
+                phoneNumber:phonenumber,
+                password:password
+              }
+            }
+            
+            Axios.post(`http://${host}:${port}/user/create`, userData).then(res =>{
+                setWrongAlertPass(false)
+                alert(`created successfull account`)
+                props.history.push('/login')
+                window.location.reload(false);
+              
+            }).catch(err=>{
+                alert('Unsuccessfull create account')
+            })
+           
+
+        }
+    }
+    const changeShowPass =()=>{
+        setShowPass(showPass => !showPass)
     }
     
   return (
@@ -58,7 +105,7 @@ function SignUpPage() {
                             </div>
                             { wrongAlertName === true && phoneAproach === true && 
                                 <div className ='loginpage-wrongalert'>
-                                   The phone number you entered isn't valid. Your phone number can contain numbers, spaces, and these special characters: ( ) [ ] . - * /
+                                   {error}
                                 </div>
                             }
                             { wrongAlertName === true && phoneAproach === false && 
@@ -83,10 +130,11 @@ function SignUpPage() {
                     
                                     </div>
                                     <div className ='loginpage-button'
-                                onClick ={validateGmail}
-                            >
-                                Next
-                            </div>
+                                     onClick ={validateGmail}
+                                     
+                                    >
+                                        Next
+                                    </div>
                                 </div>
                             }
                             {
@@ -126,25 +174,27 @@ function SignUpPage() {
                             <div className ='signup-title-small'>Enter the password you would like to use with your account.</div>
                             { wrongAlertPass === true&&
                                 <div className ='loginpage-wrongalert'>
-                                    Passwords must have at least 8 characters and contain at least two of the following: uppercase letters, lowercase letters, numbers, and symbols.
+                                   {error}
                                 </div>
                             }
                             <div className ='loginpage-input'>
-                                <input type ='password' className ="input-phone" placeholder ="Create password"
+                                <input type = {showPass ? 'text':'password'} 
+                                className ="input-phone" 
+                                placeholder ="Create password"
                                 value ={password}
                                 onChange= {e => setPassword(e.target.value)}
                                 />
 
                             </div>
                             <div className ='loginpage-keep'>
-                                <input type = 'checkbox'/>
+                                <input type = 'checkbox' onClick={changeShowPass}/>
                                 <p>Show password</p>
                             </div>
                             <div className ='signup-quote'>
                                 By providing your phone number, you agree to receive service notifications to your mobile phone. Text messaging rates may apply.
                             </div>
                             
-                            <div className ='loginpage-button'>
+                            <div className ='loginpage-button' onClick={validatePassword}>
                                 Next
                             </div>
                         </div>
@@ -163,4 +213,4 @@ function SignUpPage() {
   );
 }
   
-export default SignUpPage
+export default  withRouter(SignUpPage)
