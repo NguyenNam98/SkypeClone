@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import Axios from 'axios'
 
 const host = process.env.REACT_APP_HOST
-console.log( process.env)
 const port = process.env.REACT_APP_PORT || 8080
 
 function SignUpPage(props) {
@@ -67,7 +66,7 @@ function SignUpPage(props) {
                 password:password
               }
             }
-            
+         
             Axios.post(`http://${host}:${port}/user/create`, userData).then(res =>{
                 setWrongAlertPass(false)
                 alert(`created successfull account`)
