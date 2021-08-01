@@ -117,24 +117,28 @@ module.exports.login = async function(req, res){
       return res.status(404).send('User not exist')
   }
   
-  const checkPass = await bcrypt.compare(password, userData.password)
+  const checkPass = await bcrypt.compare(password, userData.password).catch( (err)=>
+    {return res.status(404).send('wrong password')}
+  )
   if(!checkPass){
       return res.status(404).send('wrong password')
   }
   const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || '2d'
   const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
-  const dataUser = {
+  const data = {
     idUser :idUser
   }
 
-  let accessToken = await jwt.sign(dataUser, accessTokenSecret,{
+  let accessToken = await jwt.sign(data, accessTokenSecret,{
     algorithm: 'HS256',
     expiresIn: accessTokenLife
   })
+
   if(!accessToken){
     return res.status(404).send('Login unsuccessfull ! please try again!')
   }
   let refreshToken = rndToken.generate(process.env.REFRESH_TOKEN_SIZE)
+
   if(!userData.refreshToken){
     users.doc(idUser).update({
       refreshToken:refreshToken
@@ -142,10 +146,46 @@ module.exports.login = async function(req, res){
   }else{
     refreshToken = userData.refreshToken
   }
+
   return res.json({
     msg:"login successfull !",
     accessToken : accessToken,
     refreshToken:refreshToken,
     userData:userData
+  })
+}
+module.exports.refreshToken = async function(req, res){
+  
+  const accessTokenHeader = req.headers.x_authorization
+  const refreshTokenBody = req.body.refreshToken
+
+  if(!accessTokenHeader || !refreshTokenBody){
+    return res.status(403).send('Erorr request !')
+  }
+
+  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+  const accessTokenLife = process.env.ACCESS_TOKEN_LIFE
+  const decoded = jwt.verify(accessTokenHeader , accessTokenSecret,{
+    ignoreExpiration:true
+  })
+
+  if(!decoded){
+    return res.status(403).send('AcessToken invalid!')
+  }
+  const data = {
+    idUser : decoded.idUser
+  }
+
+  const accessToken = await jwt.sign(data, accessTokenSecret,{
+    algorithm: 'HS256',
+    expiresIn: accessTokenLife
+  })
+
+  if(!accessToken){
+    return res.status(403).send('Error genarate token !')
+
+  }
+  return res.json({
+    accessToken
   })
 }

@@ -1,15 +1,18 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
 import { withRouter } from "react-router-dom";
 import {
     Link
   } from "react-router-dom";
+import Axios from 'axios'
+import {UserContext} from '../context/user.context'
 
-function LoginPage() {
+const host = process.env.REACT_APP_HOST
+const port = process.env.REACT_APP_PORT || 8080
+
+function LoginPage(props) {
+    const {userInfo, setUserInfo} = useContext(UserContext)
     const [passSide, setPassSide]= useState(false)
-    // const switchPassSide = ()=> {
-    //     setPassSide(passSide => !passSide)
-    // }
-    const [gmail, setGmail]= useState('')
+    let [gmail, setGmail]= useState('')
     const [password, setPassword]= useState('')
     const [wrongAlertPass, setWrongAlertPass] = useState(false)
     const [wrongAlertName, setWrongAlertName] = useState(false)
@@ -24,6 +27,31 @@ function LoginPage() {
             setPassSide(true)
         }
 
+    }
+    const signIn = ()=>{
+        let phoneNumber =''
+        let formatPhone = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/)
+
+        if(formatPhone.test(gmail)){
+            phoneNumber=gmail
+            gmail =''
+        }
+        let userData = {
+            phoneNumber : phoneNumber,
+            gmail:gmail,
+            password:password
+        }
+        
+         Axios.post(`http://${host}:${port}/user/auth/login`, userData).then((res)=>{
+            setUserInfo(res.data.userData)
+            alert('login successfull!')
+            props.history.push('/')
+            window.location.reload(false);  
+         
+        }).catch((err)=>{
+            alert('login unsuccessfull! please try again!')
+        })
+        
     }
   return (
     <div className = 'loginpage'>
@@ -105,7 +133,8 @@ function LoginPage() {
                             <div className ='loginpage-link'>
                                 <a href ="http://google.com">Other ways to sign in</a>
                             </div>
-                            <div className ='loginpage-button'  
+                            <div className ='loginpage-button' 
+                            onClick={signIn} 
                             >
                                 Sign in
                             </div>
