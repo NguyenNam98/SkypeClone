@@ -1,5 +1,6 @@
 import React,{useState,useContext} from 'react'
 import { withRouter } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 import {
     Link
   } from "react-router-dom";
@@ -10,6 +11,7 @@ const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
 
 function LoginPage(props) {
+    const [cookies, setCookie] = useCookies(['x_authorization']);
     const {userInfo, setUserInfo} = useContext(UserContext)
     const [passSide, setPassSide]= useState(false)
     let [gmail, setGmail]= useState('')
@@ -44,6 +46,8 @@ function LoginPage(props) {
         
          Axios.post(`http://${host}:${port}/user/auth/login`, userData).then((res)=>{
             setUserInfo(res.data.userData)
+           
+            // setCookie('x_authorization', res.data.userData.accessToken, { path: '/' ,httpOnly:true});
             alert('login successfull!')
             props.history.push('/')
             window.location.reload(false);  

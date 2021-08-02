@@ -3,6 +3,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { CookiesProvider } from 'react-cookie';
 import {UserProvider} from './context/user.context'
 import homePage from './Pages/homePage';
 import './app.css'
@@ -12,6 +13,7 @@ import SignUpPage from './Pages/signUpPage';
   function App() {
     
     return (
+      <CookiesProvider>
       <UserProvider>
         <Router>
           <div className='app'>
@@ -23,6 +25,7 @@ import SignUpPage from './Pages/signUpPage';
           </div>
          </Router>
       </UserProvider>
+      </CookiesProvider>
     );
   }
 
