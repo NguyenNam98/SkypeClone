@@ -133,7 +133,7 @@ module.exports.login = async function(req, res){
     algorithm: 'HS256',
     expiresIn: accessTokenLife
   })
-
+ 
   if(!accessToken){
     return res.status(404).send('Login unsuccessfull ! please try again!')
   }
@@ -146,12 +146,11 @@ module.exports.login = async function(req, res){
   }else{
     refreshToken = userData.refreshToken
   }
-
   return res.json({
     msg:"login successfull !",
-    accessToken : accessToken,
-    refreshToken:refreshToken,
-    userData:userData
+    accessToken ,
+    refreshToken,
+    userData
   })
 }
 module.exports.refreshToken = async function(req, res){
@@ -185,7 +184,52 @@ module.exports.refreshToken = async function(req, res){
     return res.status(403).send('Error genarate token !')
 
   }
+
   return res.json({
+    accessToken
+  })
+}
+module.exports.checkLogin = async function(req, res){
+  const accessTokenHeader = req.headers.x_authorization
+  const refreshTokenBody = req.body.refreshToken
+  
+  if(!accessTokenHeader || !refreshTokenBody){
+    return res.status(403).send('Erorr request !')
+  }
+
+  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+  const accessTokenLife = process.env.ACCESS_TOKEN_LIFE
+  const decoded = jwt.verify(accessTokenHeader , accessTokenSecret,{
+    ignoreExpiration:true
+  })
+
+  if(!decoded){
+    return res.status(403).send('AcessToken invalid!')
+  }
+  const data = {
+    idUser : decoded.idUser
+  }
+
+  const userData =  await (await users.doc(decoded.idUser).get()).data()
+	if (!userData) {
+		return res.status(401).send('User  not exists');
+	}
+
+	if (refreshTokenBody !== userData.refreshToken) {
+		return res.status(400).send('Refresh token invalid.');
+	}
+  const accessToken = await jwt.sign(data, accessTokenSecret,{
+    algorithm: 'HS256',
+    expiresIn: accessTokenLife
+  })
+
+  if(!accessToken){
+    return res.status(403).send('Error genarate token !')
+
+  }
+
+  return res.json({
+    userData,
     accessToken
   })
 }
