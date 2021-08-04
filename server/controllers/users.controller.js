@@ -85,6 +85,7 @@ module.exports.getGroupsInfoUser = async function(req, res){
 }
 
 module.exports.login = async function(req, res){
+  ;
   const phoneNumber = req.body.phoneNumber
   const gmail =  req.body.gmail
   const password = req.body.password
@@ -146,6 +147,11 @@ module.exports.login = async function(req, res){
   }else{
     refreshToken = userData.refreshToken
   }
+  await res.cookie('access_Token', accessToken,{
+    httpOnly:true,
+    expires : new Date(Date.now() + 1000*3600*24*7),
+    signed : true
+  })
   return res.json({
     msg:"login successfull !",
     accessToken ,
@@ -154,7 +160,6 @@ module.exports.login = async function(req, res){
   })
 }
 module.exports.refreshToken = async function(req, res){
-  
   const accessTokenHeader = req.headers.x_authorization
   const refreshTokenBody = req.body.refreshToken
 
@@ -190,6 +195,8 @@ module.exports.refreshToken = async function(req, res){
   })
 }
 module.exports.checkLogin = async function(req, res){
+
+  console.log(req.cookies);
   const accessTokenHeader = req.headers.x_authorization
   const refreshTokenBody = req.body.refreshToken
   
@@ -227,7 +234,7 @@ module.exports.checkLogin = async function(req, res){
     return res.status(403).send('Error genarate token !')
 
   }
-
+  res.cookie('accessToken', accessToken)
   return res.json({
     userData,
     accessToken

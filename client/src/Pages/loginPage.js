@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react'
+import React,{useState, useContext, useEffect} from 'react'
 import { withRouter } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import {
@@ -11,7 +11,8 @@ const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
 
 function LoginPage(props) {
-    const [cookies, setCookie] = useCookies(['x_authorization']);
+    Axios.defaults.withCredentials = true;
+    // const [cookies, setCookie] = useCookies(['x_authorization']);
     const {userInfo, setUserInfo} = useContext(UserContext)
     const [passSide, setPassSide]= useState(false)
     let [gmail, setGmail]= useState('')
@@ -44,19 +45,40 @@ function LoginPage(props) {
             password:password
         }
         
-         Axios.post(`http://${host}:${port}/user/auth/login`, userData).then((res)=>{
+         Axios.post(`http://${host}:${port}/user/auth/login`, userData,{
+             headers:{
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }
+        }).then((res)=>{
             setUserInfo(res.data.userData)
-           
-            // setCookie('x_authorization', res.data.userData.accessToken, { path: '/' ,httpOnly:true});
+            localStorage.setItem('refresh_token', res.data.refreshToken)
             alert('login successfull!')
-            props.history.push('/')
-            window.location.reload(false);  
+            // props.history.push('/')
+            // window.location.reload(false);  
          
         }).catch((err)=>{
             alert('login unsuccessfull! please try again!')
         })
         
     }
+    useEffect(() => {
+        let data = {
+            refreshToken : localStorage.getItem('refresh_token')
+        }
+        Axios.post(`http://${host}:${port}/user/auth/checkLogin`, data,{
+            headers :{
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+            }
+        }).then((res) => {
+            setUserInfo(res.data.userData)
+            props.history.push('/')
+            window.location.reload(false);  
+        });
+      }, []);
   return (
     <div className = 'loginpage'>
         <div className = 'loginpage-container'>
