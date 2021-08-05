@@ -1,12 +1,14 @@
-import React,{useState} from 'react'
+import React,{useState, useContext, useEffect} from 'react'
 import { withRouter } from "react-router-dom";
 import Axios from 'axios'
+import {UserContext} from '../context/user.context'
 
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
 
 function SignUpPage(props) {
-    
+    Axios.defaults.withCredentials = true;
+    const {userInfo, setUserInfo} = useContext(UserContext)
     const [passSide, setPassSide]= useState(false)
     const switchPassSide = ()=> {
         setPassSide(passSide => !passSide)
@@ -83,7 +85,28 @@ function SignUpPage(props) {
     const changeShowPass =()=>{
         setShowPass(showPass => !showPass)
     }
-    
+    useEffect(() => {
+        let data = {
+            refreshToken : localStorage.getItem('refresh_token')
+        }
+        Axios.post(`http://${host}:${port}/user/auth/checkLogin`, data,{
+            headers : {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        })
+        .then((res) => {
+            setUserInfo(res.data.userData)
+            props.history.push('/')
+            window.location.reload(false);  
+        })
+        .catch(err =>{
+            setUserInfo({})
+            // props.history.push('/login')
+            // window.location.reload(false);
+       })
+      }, []);
   return (
     <div className = 'loginpage'>
         <div className = 'loginpage-container'>

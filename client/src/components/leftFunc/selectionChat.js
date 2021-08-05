@@ -12,7 +12,7 @@ function selectionChat() {
             <i className="fas fa-angle-down"></i>
         </div>
         <div className = 'selectionchat-item'>
-            <i class="far fa-edit"></i>
+            <i className="far fa-edit"></i>
             <p className ='selectionchat-text'>Cuộc trò chuyện mới</p>
             <i className="fas fa-angle-down"></i>
         </div>

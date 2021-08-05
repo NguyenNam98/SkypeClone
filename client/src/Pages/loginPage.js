@@ -1,6 +1,5 @@
 import React,{useState, useContext, useEffect} from 'react'
 import { withRouter } from "react-router-dom";
-import { useCookies } from 'react-cookie';
 import {
     Link
   } from "react-router-dom";
@@ -12,13 +11,15 @@ const port = process.env.REACT_APP_PORT || 8080
 
 function LoginPage(props) {
     Axios.defaults.withCredentials = true;
-    // const [cookies, setCookie] = useCookies(['x_authorization']);
-    const {userInfo, setUserInfo} = useContext(UserContext)
+    const {setUserInfo} = useContext(UserContext)
     const [passSide, setPassSide]= useState(false)
+
     let [gmail, setGmail]= useState('')
     const [password, setPassword]= useState('')
+
     const [wrongAlertPass, setWrongAlertPass] = useState(false)
     const [wrongAlertName, setWrongAlertName] = useState(false)
+
     const validateUserInput =()=>{
         let formatGmail = new RegExp(/^[\w.+\-]+@gmail\.com$/)
         let formatPhone = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/)
@@ -29,7 +30,6 @@ function LoginPage(props) {
             setWrongAlertName(false)
             setPassSide(true)
         }
-
     }
     const signIn = ()=>{
         let phoneNumber =''
@@ -43,42 +43,66 @@ function LoginPage(props) {
             phoneNumber : phoneNumber,
             gmail:gmail,
             password:password
-        }
-        
-         Axios.post(`http://${host}:${port}/user/auth/login`, userData,{
+        }  
+         Axios.post(`http://${host}:${port}/user/auth/login`, userData, {
              headers:{
-                        'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    }
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
         }).then((res)=>{
             setUserInfo(res.data.userData)
             localStorage.setItem('refresh_token', res.data.refreshToken)
-            alert('login successfull!')
-            // props.history.push('/')
-            // window.location.reload(false);  
+            alert('Login successfull!')
+            props.history.push('/')
+            window.location.reload(false);  
          
         }).catch((err)=>{
             alert('login unsuccessfull! please try again!')
         })
-        
     }
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         let data = {
+    //                     refreshToken : localStorage.getItem('refresh_token')
+    //                 }
+    //         Axios.post(`http://${host}:${port}/user/auth/refreshToken`, data, {
+    //             headers : {
+    //                     'Access-Control-Allow-Origin': '*',
+    //                     'Content-Type': 'application/json',
+    //                     'Accept': 'application/json',
+    //                 }
+    //         }).then(res=>{
+    //         }).catch(err =>{
+    //                 setUserInfo({})
+    //         })
+    //     }, 1000*90*60);
+    //     return () => clearInterval(interval);
+    //   }, []);
     useEffect(() => {
         let data = {
             refreshToken : localStorage.getItem('refresh_token')
         }
         Axios.post(`http://${host}:${port}/user/auth/checkLogin`, data,{
-            headers :{
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
+            headers : {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
             }
-        }).then((res) => {
+        })
+        .then((res) => {
             setUserInfo(res.data.userData)
             props.history.push('/')
             window.location.reload(false);  
-        });
+        })
+        .catch(err =>{
+            setUserInfo({})
+            // props.history.push('/login')
+            // window.location.reload(false);
+       })
       }, []);
+
   return (
     <div className = 'loginpage'>
         <div className = 'loginpage-container'>

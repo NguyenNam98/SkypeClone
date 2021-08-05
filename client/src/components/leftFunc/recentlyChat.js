@@ -30,7 +30,7 @@ function recentlyChat() {
         <div className = 'recentlychat-conversation'>
             {users.map((item) => {
                 return(
-                    <div className = 'recentlychat-info'>
+                    <div className = 'recentlychat-info' >
                         <div className = 'recentlychat-left'>
                             <Avatar name = {item.avatar} {...avatarConfig}/>
                             <div className ='recentlychat-room'>

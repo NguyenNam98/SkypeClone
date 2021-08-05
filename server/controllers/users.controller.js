@@ -85,7 +85,6 @@ module.exports.getGroupsInfoUser = async function(req, res){
 }
 
 module.exports.login = async function(req, res){
-  ;
   const phoneNumber = req.body.phoneNumber
   const gmail =  req.body.gmail
   const password = req.body.password
@@ -147,10 +146,10 @@ module.exports.login = async function(req, res){
   }else{
     refreshToken = userData.refreshToken
   }
-  await res.cookie('access_Token', accessToken,{
+ 
+  await res.cookie('x_authorization', accessToken,{
     httpOnly:true,
-    expires : new Date(Date.now() + 1000*3600*24*7),
-    signed : true
+    expires : new Date(Date.now() + 1000*3600*24*7)
   })
   return res.json({
     msg:"login successfull !",
@@ -160,83 +159,99 @@ module.exports.login = async function(req, res){
   })
 }
 module.exports.refreshToken = async function(req, res){
-  const accessTokenHeader = req.headers.x_authorization
-  const refreshTokenBody = req.body.refreshToken
-
-  if(!accessTokenHeader || !refreshTokenBody){
-    return res.status(403).send('Erorr request !')
+  try {
+    
+    const accessTokenHeader = req.cookies.x_authorization
+    const refreshTokenBody = req.body.refreshToken
+  
+    if(!accessTokenHeader || !refreshTokenBody){
+      return res.status(403).send('Erorr request !')
+    }
+  
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+    const accessTokenLife = process.env.ACCESS_TOKEN_LIFE
+    const decoded = jwt.verify(accessTokenHeader , accessTokenSecret,{
+      ignoreExpiration:false
+    })
+  
+    if(!decoded){
+      return res.status(403).send('AcessToken invalid!')
+    }
+    const data = {
+      idUser : decoded.idUser
+    }
+  
+    const accessToken = await jwt.sign(data, accessTokenSecret,{
+      algorithm: 'HS256',
+      expiresIn: accessTokenLife
+    })
+  
+    if(!accessToken){
+      return res.status(403).send('Error genarate token !')
+  
+    }
+    await res.cookie('x_authorization', accessToken,{
+      httpOnly:true,
+      expires : new Date(Date.now() + 1000*3600*24*7)
+    })
+    return res.json({
+      accessToken
+    })
+  } catch (error) {
+    return res.status(403).send('Erorr request !') 
   }
-
-  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
-  const accessTokenLife = process.env.ACCESS_TOKEN_LIFE
-  const decoded = jwt.verify(accessTokenHeader , accessTokenSecret,{
-    ignoreExpiration:true
-  })
-
-  if(!decoded){
-    return res.status(403).send('AcessToken invalid!')
-  }
-  const data = {
-    idUser : decoded.idUser
-  }
-
-  const accessToken = await jwt.sign(data, accessTokenSecret,{
-    algorithm: 'HS256',
-    expiresIn: accessTokenLife
-  })
-
-  if(!accessToken){
-    return res.status(403).send('Error genarate token !')
-
-  }
-
-  return res.json({
-    accessToken
-  })
 }
 module.exports.checkLogin = async function(req, res){
-
-  console.log(req.cookies);
-  const accessTokenHeader = req.headers.x_authorization
-  const refreshTokenBody = req.body.refreshToken
+  try {
+    
+    const accessTokenHeader = req.cookies.x_authorization
+    const refreshTokenBody = req.body.refreshToken
   
-  if(!accessTokenHeader || !refreshTokenBody){
+    if(!accessTokenHeader || !refreshTokenBody){
+      return res.status(403).send('Erorr request !')
+    }
+  
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+    const accessTokenLife = process.env.ACCESS_TOKEN_LIFE
+    const decoded = jwt.verify(accessTokenHeader , accessTokenSecret,{
+      ignoreExpiration:false
+    })
+    if(!decoded){
+      return res.status(403).send('AcessToken invalid!')
+    }
+  
+    const data = {
+      idUser : decoded.idUser
+    }
+  
+    const userData =  await (await users.doc(decoded.idUser).get()).data()
+  
+    if (!userData) {
+      return res.status(401).send('User  not exists');
+    }
+  
+    if (refreshTokenBody !== userData.refreshToken) {
+      return res.status(400).send('Refresh token invalid.');
+    }
+  
+    const accessToken = await jwt.sign(data, accessTokenSecret,{
+      algorithm: 'HS256',
+      expiresIn: accessTokenLife
+    })
+  
+    if(!accessToken){
+      return res.status(403).send('Error genarate token !')
+  
+    }
+    await res.cookie('x_authorization', accessToken,{
+      httpOnly:true,
+      expires : new Date(Date.now() + 1000*3600*24*7)
+    })
+    return res.json({
+      userData,
+      accessToken
+    })
+  } catch (error) {
     return res.status(403).send('Erorr request !')
   }
-
-  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
-  const accessTokenLife = process.env.ACCESS_TOKEN_LIFE
-  const decoded = jwt.verify(accessTokenHeader , accessTokenSecret,{
-    ignoreExpiration:true
-  })
-
-  if(!decoded){
-    return res.status(403).send('AcessToken invalid!')
-  }
-  const data = {
-    idUser : decoded.idUser
-  }
-
-  const userData =  await (await users.doc(decoded.idUser).get()).data()
-	if (!userData) {
-		return res.status(401).send('User  not exists');
-	}
-
-	if (refreshTokenBody !== userData.refreshToken) {
-		return res.status(400).send('Refresh token invalid.');
-	}
-  const accessToken = await jwt.sign(data, accessTokenSecret,{
-    algorithm: 'HS256',
-    expiresIn: accessTokenLife
-  })
-
-  if(!accessToken){
-    return res.status(403).send('Error genarate token !')
-
-  }
-  res.cookie('accessToken', accessToken)
-  return res.json({
-    userData,
-    accessToken
-  })
 }

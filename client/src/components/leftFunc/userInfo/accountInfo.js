@@ -125,14 +125,14 @@ function AccountInfo(props) {
                 <p>Hồ sơ Skype</p>
               </div>
               <div className ='accountInfo-phone-call'>
-                  <i class="fab fa-phoenix-framework"></i>
+                  <i className="fab fa-phoenix-framework"></i>
                   <div className ='accountInfo-phone-text'>
                     <p className = 'accountInfo-phonenumber'>Skype tới điện thoại</p>
                     <p className = 'accountInfo-phone-fee'>Gọi điện với cước phí thấp</p>
                   </div>
               </div>
               <div className ='accountInfo-phone-call'>
-                  <i class="fas fa-phone-volume"></i>
+                  <i className="fas fa-phone-volume"></i>
                   <div className ='accountInfo-phone-text'>
                     <p className = 'accountInfo-phonenumber'>Số Skype</p>
                     <p className = 'accountInfo-phone-fee'>Nhập số thứ hai</p>
