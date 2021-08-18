@@ -213,8 +213,9 @@
     font-size: 14px;
 }
 .recentlychat-time{
+    white-space: nowrap;
     color: #777;
-    font-size: 14px;
+    font-size: 12px;
 }
 /* accountInfo css*/
 .accountInfo{
