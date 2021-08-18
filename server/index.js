@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const httpServer = require("http").createServer(app);
 var cookieParser = require('cookie-parser');
+const authMiddleWare = require('./middlewares/auth.middleware')
 
 var cors = require('cors')
 
@@ -19,6 +20,7 @@ const io = require("socket.io")(httpServer, {
   }
 });
 
+
 app.use(cors({
   credentials: true,
   origin:true
@@ -32,7 +34,7 @@ app.use(cookieParser('michael98'))
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-app.get('/',(req,res)=>{
+app.get('/',(req, res)=>{
   res.send('helooo')
 })
 
@@ -41,8 +43,8 @@ io.on('connection',async (socket)=>{
 })
 
 app.use('/user',userRoute)
-app.use('/message',messageRoute)
-app.use('/group', groupRoute)
+app.use('/message',authMiddleWare.authMiddle,messageRoute)
+app.use('/group',authMiddleWare.authMiddle, groupRoute)
 
 
 httpServer.listen(port);

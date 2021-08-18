@@ -9,7 +9,7 @@ import RoomChat from '../components/rightFunc/showChat/roomChat';
 import './pages.css'
 
 import Axios from 'axios'
-import React,{useState, useContext, useEffect} from 'react'
+import React,{useContext, useEffect} from 'react'
 import {UserContext} from '../context/user.context'
 import { withRouter } from "react-router-dom";
 
@@ -18,7 +18,8 @@ const port = process.env.REACT_APP_PORT || 8080
 
 function HomePage (props) {
   Axios.defaults.withCredentials = true;
-  const {userInfo, setUserInfo} = useContext(UserContext)
+  const {userInfo, setUserInfo,firstPage,setToListGroups , listGroups} = useContext(UserContext)
+  
   useEffect(() => {
         const interval = setInterval(() => {
             let data = {
@@ -61,6 +62,18 @@ function HomePage (props) {
           window.location.reload(false);
      })
     }, []);
+    useEffect(() => {
+
+      Axios.get(`http://${host}:${port}/group/listGroups`)
+      .then((res) => {
+        setToListGroups(res.data)
+      })
+      .catch(err =>{
+        props.history.push('/login')
+        window.location.reload(false);
+     })
+    }, []);
+
     return (
       <div className = 'homepage'>
         <div className = 'homepage-container'>
@@ -69,11 +82,19 @@ function HomePage (props) {
               <Search/>
               <Menu/>
               <SelectionChat/>
-              <RecentlyChat/>
+              <RecentlyChat />
           </div>
           <div className ='rightfunc'>
-              {/* < Welcome/> */}
+            {
+              firstPage === true &&
+             < Welcome/> 
+            }
+            {
+              firstPage === false &&
               <RoomChat/>
+            }
+          
+              
           </div>
 
         </div>
