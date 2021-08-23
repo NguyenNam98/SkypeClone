@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react"
 import '../rightFunc.css'
-import Message from './message';
-import socketIOClient from "socket.io-client";
-const ENDPOINT ="http://127.0.0.1:8080"
+import Message from './message'
+import socketIOClient from "socket.io-client"
+import {UserContext} from '../../../context/user.context'
 
+const host = process.env.REACT_APP_HOST
+const port = process.env.REACT_APP_PORT || 8080
+const ENDPOINT =`http://${host}:${port}`
+const io = socketIOClient(ENDPOINT);
 
 function  RoomChat() {
-  
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("xin", data => {
-      console.log(data);
-    });
+  const {currentRoom, userInfo} = useContext(UserContext) 
+  useEffect(() => {
+    io.emit('join',{idRoom : currentRoom, idUser : userInfo.idUser})
+  }, [currentRoom])
 
     const romchat ={
         id:1, roomName:'Chợ tám xuyên 24/24',

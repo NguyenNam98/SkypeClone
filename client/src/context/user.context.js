@@ -8,12 +8,13 @@ export function UserProvider (props){
     const [userInfo,setUserInfo]= useState({})
     const [firstPage, setFisrtPage] = useState(true)
     const [listGroups , setListGroups] = useState([])
+    const [currentRoom, setCurrentRoom] = useState([])
     const setUserInfoFunc =(user)=>{
         setUserInfo(Object.assign(user, userInfo))
     }
-    const setToFisrtPage =()=>{
-        setFisrtPage(false)
-    }
+    // const setToFisrtPage =()=>{
+    //     setFisrtPage(false)
+    // }
     const setToListGroups =(groups)=>{
         setListGroups(groups)    
     }
@@ -24,9 +25,11 @@ export function UserProvider (props){
                 userInfo:userInfo,
                 setUserInfo:setUserInfoFunc,
                 firstPage: firstPage,
-                setToFisrtPage: setToFisrtPage,
+                setFisrtPage: setFisrtPage,
                 listGroups: listGroups,
-                setToListGroups: setToListGroups
+                setToListGroups: setToListGroups,
+                currentRoom:currentRoom,
+                setCurrentRoom:setCurrentRoom
             }}
         >
             {props.children}
