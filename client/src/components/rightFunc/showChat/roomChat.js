@@ -10,40 +10,23 @@ const ENDPOINT =`http://${host}:${port}`
 const io = socketIOClient(ENDPOINT);
 
 function  RoomChat() {
-  const {currentRoom, userInfo} = useContext(UserContext) 
+  const {currentRoom, userInfo, dataMessageGroup} = useContext(UserContext) 
+  
   useEffect(() => {
     io.emit('join',{idRoom : currentRoom, idUser : userInfo.idUser})
+    
   }, [currentRoom])
 
-    const romchat ={
-        id:1, roomName:'Chợ tám xuyên 24/24',
-        users :[
-            { id :'1', username:'nguyennam',
-            messages:[
-                {message:'anh đang lam gì thế?', time:'11:35 AM'},
-                {message:'anh đang lam gì thế?', time:'11:38 AM'},
-                {message:'anh đang lam gì thế?', time:'11:40 AM'},
-                ]
-            },
-            { id :'2', username:'nguyen',
-            messages:[
-                {message:'anh đang lam gì thế?', time:'11:36 AM'},
-                {message:'anh đang lam gì thế?', time:'11:39 AM'},
-                {message:'anh đang lam gì thế?', time:'11:42 AM'},
-                ]
-            },
-        ]
-    }
   return (
     <div className = 'roomchat'>
       <div className = 'roomchat-container'>
             <div className = 'roomchat-navbar'>
               <div className = 'roomchat-navbar-left'>
-                <div className = 'roomchat-left-name'>{romchat.roomName}</div>
+                <div className = 'roomchat-left-name'>{currentRoom.nameGroup}</div>
                 <div className = 'roomchat-left-info'>
                     <div className = 'roomchat-left-numberuser'>
                       <p>
-                        {romchat.users.length} người dự
+                        {currentRoom.numberOfUser} người dự
                       </p>
                     </div>
                     <div className = 'roomchat-left-library'>
@@ -63,6 +46,9 @@ function  RoomChat() {
               </div>
           </div>
           <div className = 'roomchat-message'>
+            {
+              
+            }
             <Message messageLeft ={true}/>
             <Message messageLeft ={false}/>
             <Message messageLeft ={true}/>
