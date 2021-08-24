@@ -2,29 +2,31 @@ import React,{useContext} from 'react'
 import './leftFunc.css'
 import Avatar from 'react-avatar'
 import {UserContext} from '../../context/user.context'
-import socketIOClient from "socket.io-client"
+import Axios from 'axios'
 
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
-const ENDPOINT =`http://${host}:${port}`
-const io = socketIOClient(ENDPOINT);
+
+
 
 function RecentlyChat() {
-  const {listGroups, setFisrtPage, setCurrentRoom} = useContext(UserContext)
+  const {listGroups, setFisrtPage, setCurrentRoom, setDataMessageGroup} = useContext(UserContext)
   const users = listGroups
   const setContextRoomChat = (index)=>{
-    
     setFisrtPage(false)
-    setCurrentRoom(index)
-    // io.on('connection', (socket)=>{
-    //   socket.emit('join', {index:index,message:'hahaah'})
-    // })
+    Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(res =>{
+      setCurrentRoom(res.data)
+    }).catch(err =>{
+      alert('Page error')
+    })
+    Axios.get(`http://${host}:${port}/message/dataRoomChat/${index}`).then(res =>{
+      setDataMessageGroup(res.data)
+    }).catch(err =>{
+      alert('Page error')
+    })
   
   }
-  // io.emit('con', {message:'hahaah'})
-  // io.on('join',(data)=>{
-  //   console.log(data);
-  // })
+
   let avatarConfig = {
     round :true,
     size : '36px',
