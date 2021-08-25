@@ -195,8 +195,10 @@
     height: 460px;
     overflow-y: scroll;
     overflow-x: hidden;
+    scroll-padding-bottom: 10%;
     margin-bottom: 20px;
 }
+
 .roomchat-newmessage{
     display: flex;
     width: 1000px;

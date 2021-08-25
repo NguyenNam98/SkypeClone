@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import './leftFunc.css'
 import Avatar from 'react-avatar'
 import {UserContext} from '../../context/user.context'
@@ -10,21 +10,20 @@ const port = process.env.REACT_APP_PORT || 8080
 
 
 function RecentlyChat() {
-  const {listGroups, setFisrtPage, setCurrentRoom, setDataMessageGroup} = useContext(UserContext)
+  const {listGroups, setFisrtPage, setCurrentRoom,setDataMessageGroup} = useContext(UserContext)
+  const [idCurrentRoom, setIdCurrentRoom] = useState('')
   const users = listGroups
-  const setContextRoomChat = (index)=>{
-    setFisrtPage(false)
-    Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(res =>{
-      setCurrentRoom(res.data)
-    }).catch(err =>{
-      alert('Page error')
+  const setContextRoomChat = async(index)=>{
+    await setIdCurrentRoom(index)
+   
+    await  Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(async res =>{
+      await setCurrentRoom(res.data)
     })
-    Axios.get(`http://${host}:${port}/message/dataRoomChat/${index}`).then(res =>{
-      setDataMessageGroup(res.data)
-    }).catch(err =>{
-      alert('Page error')
+    await Axios.get(`http://${host}:${port}/message/dataRoomChat/${index}`).then(async res =>{
+        await setDataMessageGroup(res.data)
     })
   
+    await setFisrtPage(false)
   }
 
   let avatarConfig = {
