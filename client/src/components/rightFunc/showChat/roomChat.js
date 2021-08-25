@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useContext ,useRef} from "react"
 import '../rightFunc.css'
 import Message from './message'
 import socketIOClient from "socket.io-client"
@@ -9,13 +9,8 @@ const port = process.env.REACT_APP_PORT || 8080
 const ENDPOINT =`http://${host}:${port}`
 const io = socketIOClient(ENDPOINT);
 
-function  RoomChat() {
-  const {currentRoom, userInfo, dataMessageGroup} = useContext(UserContext) 
-  
-  useEffect(() => {
-    io.emit('join',{idRoom : currentRoom, idUser : userInfo.idUser})
-    
-  }, [currentRoom])
+function RoomChat() {
+  const {currentRoom, userInfo,dataMessageGroup} = useContext(UserContext) 
 
   return (
     <div className = 'roomchat'>
@@ -46,17 +41,36 @@ function  RoomChat() {
               </div>
           </div>
           <div className = 'roomchat-message'>
-            {
-              
+            { 
+              dataMessageGroup.messagesGroup.map(item =>{
+                let dataUser ={}
+               
+                dataMessageGroup.dataUsersGroup.forEach(element => {
+                  if(element.idUser === item.idUser){
+                    dataUser = element
+                  }
+                });
+             
+                return(
+                  <div>
+                  {
+                    item.idUser == userInfo.idUser &&
+                    <Message messageLeft ={false}
+                             messageData = {item}
+                             dataUser ={dataUser}
+                    />
+                  }
+                  {
+                    item.idUser !== userInfo.idUser &&
+                    <Message messageLeft ={true}
+                             messageData = {item}
+                             dataUser = {dataUser}
+                    />
+                  }
+                  </div>
+                  )
+              })
             }
-            <Message messageLeft ={true}/>
-            <Message messageLeft ={false}/>
-            <Message messageLeft ={true}/>
-            <Message messageLeft ={false}/>
-            <Message messageLeft ={true}/>
-            <Message messageLeft ={false}/>
-            <Message messageLeft ={true}/>
-            <Message messageLeft ={false}/>
           </div>
           <div className = 'roomchat-newmessage'>
             <div className = 'newmessage-left'>

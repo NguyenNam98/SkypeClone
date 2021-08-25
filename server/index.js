@@ -2,8 +2,13 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const httpServer = require("http").createServer(app);
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const authMiddleWare = require('./middlewares/auth.middleware')
+
+const database = require('./models/firebaseConnect')
+const messages= database.db.collection('messages')
+const groups = database.db.collection('groups') 
+
 
 var cors = require('cors')
 
@@ -34,17 +39,13 @@ app.use(cookieParser('michael98'))
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-app.get('/',(req, res)=>{
-  res.send('helooo')
-})
+// io.on('connection',async (socket)=>{
+ 
 
-io.on('connection',async (socket)=>{
-  socket.emit("xin","chao")
-})
+// })
 
 app.use('/user',userRoute)
-app.use('/message',authMiddleWare.authMiddle,messageRoute)
+app.use('/message',messageRoute)
 app.use('/group',authMiddleWare.authMiddle, groupRoute)
-
 
 httpServer.listen(port);

@@ -151,11 +151,18 @@ module.exports.login = async function(req, res){
     httpOnly:true,
     expires : new Date(Date.now() + 1000*3600*24*7)
   })
+  let info ={
+    avatar : userData.avatar,
+    gmail: userData.gmail,
+    username: userData.username,
+    idUser: idUser
+    
+  }
   return res.json({
     msg:"login successfull !",
     accessToken ,
     refreshToken,
-    userData
+    userData : info
   })
 }
 module.exports.refreshToken = async function(req, res){
@@ -247,8 +254,15 @@ module.exports.checkLogin = async function(req, res){
       httpOnly:true,
       expires : new Date(Date.now() + 1000*3600*24*7)
     })
+    let info ={
+      avatar : userData.avatar,
+      gmail: userData.gmail,
+      username: userData.username,
+      idUser: decoded.idUser
+      
+    }
     return res.json({
-      userData,
+      userData : info,
       accessToken
     })
   } catch (error) {

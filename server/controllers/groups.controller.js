@@ -54,15 +54,12 @@ module.exports.addMember = async function( req, res){
     }
 }
 module.exports.getGroup = async (req, res)=>{
-    // if(!req.params.idUser){
-    //     res.status(403).send('invalid request')
-    // }
-
+ try {
     const idUser = req.idUser
     let groupsOfUser = []
-  
     let dataGrUser = []
     const user = users.doc(idUser)
+
     await user.get().then(item =>{
         groupsOfUser = item.data().groups
     })
@@ -98,5 +95,22 @@ module.exports.getGroup = async (req, res)=>{
             })
         }
     }
-    return res.send(dataGrUser)
+    return res.status(200).send(dataGrUser)
+ }catch (error) {
+    return res.status(404).send('Error request')
+ }
+}
+module.exports.dataOneGroup = async (req, res)=>{
+    try {
+        const idGroup = req.params.idGroup
+        
+        await groups.doc(idGroup).get().then(item =>{
+            let data = {idGroup,...item.data()}
+            return res.status(200).send(data)
+        })
+        
+    } catch (error) {
+        return res.status(404).send('Error request')
+    }
+
 }

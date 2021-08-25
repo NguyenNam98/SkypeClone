@@ -32,7 +32,7 @@ export function UserProvider (props){
                 currentRoom:currentRoom,
                 setCurrentRoom:setCurrentRoom,
                 dataMessageGroup:dataMessageGroup,
-                setDataMessageGroup,setDataMessageGroup
+                setDataMessageGroup:setDataMessageGroup
             }}
         >
             {props.children}
