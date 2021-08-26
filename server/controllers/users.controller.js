@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
 const rndToken = require('rand-token')
+const rndHash = require('random-hash')
 //const urlAvatar = 'https://res.cloudinary.com/dsweb19ql/image/upload/v1629127734/1_jsdzla.jpg'
 
 module.exports.getInfo = async function(req, res){

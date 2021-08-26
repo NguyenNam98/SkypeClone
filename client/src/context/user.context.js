@@ -9,7 +9,9 @@ export function UserProvider (props){
     const [firstPage, setFisrtPage] = useState(true)
     const [listGroups , setListGroups] = useState([])
     const [currentRoom, setCurrentRoom] = useState([])
-    const [dataMessageGroup , setDataMessageGroup]= useState([])
+    const [usersCurrentGroup, setUsersCurrentGroup] = useState([])
+    const [messagesOfCurrentGroup ,setMessagesCurrentGroup]= useState([])
+
     const setUserInfoFunc =(user)=>{
         setUserInfo(Object.assign(user, userInfo))
     }
@@ -31,8 +33,10 @@ export function UserProvider (props){
                 setToListGroups: setToListGroups,
                 currentRoom:currentRoom,
                 setCurrentRoom:setCurrentRoom,
-                dataMessageGroup:dataMessageGroup,
-                setDataMessageGroup:setDataMessageGroup
+                messagesOfCurrentGroup: messagesOfCurrentGroup,
+                setMessagesCurrentGroup: setMessagesCurrentGroup,
+                usersCurrentGroup: usersCurrentGroup,
+                setUsersCurrentGroup: setUsersCurrentGroup
             }}
         >
             {props.children}

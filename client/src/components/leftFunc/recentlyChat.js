@@ -7,20 +7,17 @@ import Axios from 'axios'
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
 
-
-
 function RecentlyChat() {
-  const {listGroups, setFisrtPage, setCurrentRoom,setDataMessageGroup} = useContext(UserContext)
-  const [idCurrentRoom, setIdCurrentRoom] = useState('')
-  const users = listGroups
+  const {listGroups, setFisrtPage, 
+    setCurrentRoom, setMessagesCurrentGroup, setUsersCurrentGroup} = useContext(UserContext)
   const setContextRoomChat = async(index)=>{
-    await setIdCurrentRoom(index)
-   
-    await  Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(async res =>{
+  
+    await Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(async res =>{
       await setCurrentRoom(res.data)
     })
     await Axios.get(`http://${host}:${port}/message/dataRoomChat/${index}`).then(async res =>{
-        await setDataMessageGroup(res.data)
+        await setMessagesCurrentGroup(res.data.messagesGroup)
+        await setUsersCurrentGroup(res.data.dataUsersGroup)
     })
   
     await setFisrtPage(false)
@@ -40,7 +37,7 @@ function RecentlyChat() {
             <i className="fas fa-angle-down"></i>
         </div>
         <div className = 'recentlychat-conversation'>
-            {users.map((item) => {
+            {listGroups.map((item) => {
                 return(
                     <div className = 'recentlychat-info' 
                       key ={item.id}

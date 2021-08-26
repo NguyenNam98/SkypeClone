@@ -4,11 +4,7 @@ const bodyParser = require('body-parser')
 const httpServer = require("http").createServer(app);
 const cookieParser = require('cookie-parser');
 const authMiddleWare = require('./middlewares/auth.middleware')
-
-const database = require('./models/firebaseConnect')
-const messages= database.db.collection('messages')
-const groups = database.db.collection('groups') 
-
+const rndToken = require('rand-token')
 
 var cors = require('cors')
 
@@ -25,7 +21,6 @@ const io = require("socket.io")(httpServer, {
   }
 });
 
-
 app.use(cors({
   credentials: true,
   origin:true
@@ -39,10 +34,25 @@ app.use(cookieParser('michael98'))
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-// io.on('connection',async (socket)=>{
- 
+io.on('connection', (socket)=>{
+ socket.on('joinRoom', data =>{
+    socket.on(data.idRoom, mess =>{
+      let rndHash = rndToken.generate(10)
+      let date = new Date()
+      let dataMes = [
+        userInfo = data.userInfo, 
+        message = {
+          text: mess.message,
+          idUser: userInfo.idUser,
+          timeCreated:date,
+          idMessage: rndHash
+        }
+      ]
+      io.emit(data.idRoom, dataMes)
+    })
+})
 
-// })
+})
 
 app.use('/user',userRoute)
 app.use('/message',messageRoute)

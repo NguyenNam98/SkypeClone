@@ -247,6 +247,10 @@
    
     
 }
+.message-name{
+     padding-right: 5px;
+}
+
 .message-detail{
     padding-left: 10px;
 }
@@ -263,8 +267,8 @@
     letter-spacing: -0.2px;
     font-family: "SF Regular", "Segoe System UI Regular", "Segoe UI Regular", sans-serif;
     color: rgb(37, 36, 35);
-    padding-left: 20px;
-    padding-top: 15px;
+    padding-left: 10px;
+    padding-top: 7px;
 }
 .message-right{
   

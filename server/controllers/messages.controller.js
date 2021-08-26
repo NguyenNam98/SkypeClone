@@ -57,6 +57,7 @@ module.exports.dataRoomChat = async (req, res) =>{
         await messages.where('idGroup',"==",idRoom).get().then(snap =>{
             snap.forEach(item => {
                 let data = {
+                    idMessage: item.id,
                     text : item.data().text,
                     timeCreated : item.data().timeCreated.toDate(),
                     idUser : item.data().idUser
@@ -71,7 +72,6 @@ module.exports.dataRoomChat = async (req, res) =>{
         }
 
         messagesGroup = messagesGroup.sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime())
-
         return res.status(200).json({
             messagesGroup,
             dataUsersGroup
