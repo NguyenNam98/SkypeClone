@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
 const rndToken = require('rand-token')
-const rndHash = require('random-hash')
+
 //const urlAvatar = 'https://res.cloudinary.com/dsweb19ql/image/upload/v1629127734/1_jsdzla.jpg'
 
 module.exports.getInfo = async function(req, res){
@@ -211,7 +211,7 @@ module.exports.refreshToken = async function(req, res){
 }
 module.exports.checkLogin = async function(req, res){
   try {
-    
+
     const accessTokenHeader = req.cookies.x_authorization
     const refreshTokenBody = req.body.refreshToken
   
@@ -262,6 +262,7 @@ module.exports.checkLogin = async function(req, res){
       idUser: decoded.idUser
       
     }
+    
     return res.json({
       userData : info,
       accessToken

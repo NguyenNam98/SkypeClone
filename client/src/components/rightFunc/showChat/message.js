@@ -1,5 +1,5 @@
   
-import React,{useContext} from 'react';
+import React,{useEffect, useRef} from 'react';
 import '../rightFunc.css'
 import Avatar from 'react-avatar'
 import avatarLink from '../../../public/avatar/avatar-test.jpg'
@@ -18,7 +18,7 @@ function sortTime (t){
   return date
 }
 
-function message(props) {
+function Message(props) {
   const messageLeft = props.messageLeft
   const messageData = props.messageData
   const dataUser = props.dataUser
@@ -28,6 +28,7 @@ function message(props) {
     round :true,
     size : '36px'
   }
+
   return (
     <div className = 'message'>
       <div className =  'message-container'>
@@ -54,8 +55,9 @@ function message(props) {
            </div>
         }
       </div>
+     
     </div>
   );
 }
   
-export default message
+export default Message

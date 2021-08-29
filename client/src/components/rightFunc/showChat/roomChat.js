@@ -1,10 +1,8 @@
-import React, { useContext ,useEffect,useState} from "react"
+import React, { useContext ,useEffect,useState,useRef} from "react"
 import '../rightFunc.css'
 import Message from './message'
 import socketIOClient from "socket.io-client"
 import {UserContext} from '../../../context/user.context'
-
-
 
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
@@ -14,20 +12,33 @@ const io = socketIOClient(ENDPOINT);
 function RoomChat() {
   const {currentRoom, userInfo, messagesOfCurrentGroup, usersCurrentGroup, setMessagesCurrentGroup} = useContext(UserContext)
   const [message, setMessage] = useState('')
+  const [dataMess, setDataMess] = useState([])
+
   const sendMessage = (e)=>{
+
     if(e.keyCode === 13){
+      
       io.emit(currentRoom.idGroup, {message:message})
-      io.on(currentRoom.idGroup, (data) =>{
-        setMessagesCurrentGroup(messagesOfCurrentGroup.unshift(data.dataMes))
-      })
+   
      setMessage('')
     }
   }
-  console.log(messagesOfCurrentGroup);
-  useEffect(()=>{
-    io.emit('joinRoom', {userInfo, idRoom:currentRoom.idGroup} )
-  },[currentRoom])
 
+  useEffect(() => {
+    io.emit('joinRoom', {userInfo, idRoom:currentRoom.idGroup} )
+    io.on(currentRoom.idGroup, (data) =>{
+      setDataMess(dataMess => [...dataMess, data])
+    })
+    return ()=>{
+      setDataMess([])
+    }
+  }, [currentRoom])
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+  }
+  //useEffect(scrollToBottom, [dataMess]);
   return (
     <div className = 'roomchat'>
       <div className = 'roomchat-container'>
@@ -56,8 +67,8 @@ function RoomChat() {
                 <i className="fas fa-user-plus nav-icon"></i>
               </div>
           </div>
-          <div className = 'roomchat-message'>
-            {/* { 
+          <div className = 'roomchat-message' >
+            { 
               messagesOfCurrentGroup.map(item =>{
                 let dataUser ={}
                
@@ -70,26 +81,55 @@ function RoomChat() {
                 });
                
                 return(
-                  <div  key ={item.idMessage}>
-                  {
-                    item.idUser === userInfo.idUser &&
-                    <Message messageLeft ={false}
-                             messageData = {item}
-                             dataUser ={dataUser}
-                            
-                    />
-                  }
-                  {
-                    item.idUser !== userInfo.idUser &&
-                    <Message messageLeft ={true}
-                             messageData = {item}
-                             dataUser = {dataUser}      
-                    />
-                  }
+                  <div  key ={item.idMessage}  >
+                    {
+                      item.idUser === userInfo.idUser &&
+                      <Message messageLeft ={false}
+                              messageData = {item}
+                              dataUser ={dataUser}        
+                      />
+                      
+                    }
+                    {
+                      item.idUser !== userInfo.idUser &&
+                      <Message messageLeft ={true}
+                              messageData = {item}
+                              dataUser = {dataUser}  
+                                
+                      />
+                    }
+                    <div ref={messagesEndRef}/>
                   </div>
                   )
               })
-            } */}
+            }
+            {
+              dataMess !== []&&
+              dataMess.map(item =>{
+                return(
+                < div  >
+                  {
+                    item.dataUser.idUser === userInfo.idUser &&
+                    <Message messageLeft ={false}
+                      messageData = {item.message}
+                      dataUser = {item.dataUser}  
+                     
+                    />
+                  }
+                  {
+                    item.dataUser.idUser !== userInfo.idUser &&
+                    <Message messageLeft ={true}
+                      messageData = {item.message}
+                      dataUser = {item.dataUser}
+                        
+                    />
+                  }
+                 
+                 <div ref={messagesEndRef}/>
+                </div>
+                )
+              })
+            }
           </div>
           <div className = 'roomchat-newmessage'>
             <div className = 'newmessage-left'>
@@ -97,7 +137,10 @@ function RoomChat() {
               <input type= 'text' placeholder = 'Nhập tin nhắn' 
                 value={message}
                 onKeyDown ={sendMessage}
-                onChange ={(e)=>{setMessage(e.target.value)}}
+                onChange ={(e)=>{
+                  e.preventDefault();
+                  setMessage(e.target.value)
+                }}
               >
 
               </input>

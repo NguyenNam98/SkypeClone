@@ -63,14 +63,13 @@ function HomePage (props) {
      })
     }, []);
     useEffect(() => {
-
       Axios.get(`http://${host}:${port}/group/listGroups`)
       .then((res) => {
         setToListGroups(res.data)
       })
       .catch(err =>{
-        props.history.push('/login')
-        window.location.reload(false);
+        // props.history.push('/login')
+        // window.location.reload(false);
      })
     }, []);
 

@@ -6,6 +6,11 @@ const cookieParser = require('cookie-parser');
 const authMiddleWare = require('./middlewares/auth.middleware')
 const rndToken = require('rand-token')
 
+const database = require('./models/firebaseConnect')
+var groups = database.db.collection('groups')
+var users = database.db.collection('users')
+var messages = database.db.collection('messages')
+
 var cors = require('cors')
 
 const dotenv = require('dotenv')
@@ -36,19 +41,29 @@ app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-
 
 io.on('connection', (socket)=>{
  socket.on('joinRoom', data =>{
-    socket.on(data.idRoom, mess =>{
+    socket.on(data.idRoom, async mess =>{
       let rndHash = rndToken.generate(10)
       let date = new Date()
-      let dataMes = [
-        userInfo = data.userInfo, 
-        message = {
+      let idMess =''
+      let message = {
           text: mess.message,
-          idUser: userInfo.idUser,
           timeCreated:date,
-          idMessage: rndHash
+          // idMessage: rndHash,
+          idUser: data.userInfo.idUser,
+          idGroup : data.idRoom
         }
-      ]
+      await messages.add(message).then(mess =>{
+        idMess = mess.id
+        groups.doc(data.idRoom).update({
+            lastMessage : mess.id
+        })
+      
+      let dataMes = {
+       'dataUser': data.userInfo, 
+        'message':{idMess, ...message}
+      }
       io.emit(data.idRoom, dataMes)
+   })
     })
 })
 
