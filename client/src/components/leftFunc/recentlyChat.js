@@ -11,7 +11,6 @@ function RecentlyChat() {
   const {listGroups, setFisrtPage, 
     setCurrentRoom, setMessagesCurrentGroup, setUsersCurrentGroup} = useContext(UserContext)
   const setContextRoomChat = async(index)=>{
-  
     await Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(async res =>{
       await setCurrentRoom(res.data)
     })
@@ -19,7 +18,6 @@ function RecentlyChat() {
         await setMessagesCurrentGroup(res.data.messagesGroup)
         await setUsersCurrentGroup(res.data.dataUsersGroup)
     })
-  
     await setFisrtPage(false)
   }
 

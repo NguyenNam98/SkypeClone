@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-
 export const UserContext= React.createContext();
-const host = process.env.REACT_APP_HOST
-const port = process.env.REACT_APP_PORT || 8080
+
 
 export function UserProvider (props){
     const [userInfo,setUserInfo]= useState({})

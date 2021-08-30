@@ -42,7 +42,6 @@ app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-
 io.on('connection', (socket)=>{
  socket.on('joinRoom', data =>{
     socket.on(data.idRoom, async mess =>{
-      let rndHash = rndToken.generate(10)
       let date = new Date()
       let idMess =''
       let message = {
@@ -59,8 +58,8 @@ io.on('connection', (socket)=>{
         })
       
       let dataMes = {
-       'dataUser': data.userInfo, 
-        'message':{idMess, ...message}
+        dataUser: data.userInfo, 
+        message:{idMess, ...message}
       }
       io.emit(data.idRoom, dataMes)
    })
