@@ -71,7 +71,7 @@ module.exports.dataRoomChat = async (req, res) =>{
             })
         }
 
-        messagesGroup = messagesGroup.sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime())
+        messagesGroup = messagesGroup.sort((a, b) => b.timeCreated.getTime() - a.timeCreated.getTime())
         return res.status(200).json({
             messagesGroup,
             dataUsersGroup

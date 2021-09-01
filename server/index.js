@@ -39,33 +39,44 @@ app.use(cookieParser('michael98'))
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-io.on('connection', (socket)=>{
- socket.on('joinRoom', data =>{
-    socket.on(data.idRoom, async mess =>{
-      let date = new Date()
-      let idMess =''
-      let message = {
-          text: mess.message,
-          timeCreated:date,
-          // idMessage: rndHash,
-          idUser: data.userInfo.idUser,
-          idGroup : data.idRoom
-        }
-      await messages.add(message).then(mess =>{
-        idMess = mess.id
-        groups.doc(data.idRoom).update({
-            lastMessage : mess.id
-        })
-      
-      let dataMes = {
-        dataUser: data.userInfo, 
-        message:{idMess, ...message}
-      }
-      io.emit(data.idRoom, dataMes)
-   })
-    })
-})
+const USER_JOIN_CHAT_EVENT = "USER_JOIN_CHAT_EVENT";
+const USER_LEAVE_CHAT_EVENT = "USER_LEAVE_CHAT_EVENT";
+const NEW_CHAT_MESSAGE_EVENT = "NEW_CHAT_MESSAGE_EVENT";
+const START_TYPING_MESSAGE_EVENT = "START_TYPING_MESSAGE_EVENT";
+const STOP_TYPING_MESSAGE_EVENT = "STOP_TYPING_MESSAGE_EVENT";
 
+io.on('connection', (socket) => {
+  console.log(`${socket.id} connected`);
+  const {idRoom, avatar, gmail, idUser, username} = socket.handshake.query
+
+  socket.join(idRoom)
+  socket.on(NEW_CHAT_MESSAGE_EVENT, async data => {
+    const date = new Date()
+    let  idMess = ''
+    const message = {
+          text: data.body,
+          timeCreated:date,
+          idUser: idUser,
+          idGroup : idRoom
+    }
+    const userInfo ={
+      avatar,
+      gmail, 
+      idUser, 
+      username
+    }
+    await messages.add(message).then(mess =>{
+              idMess = mess.id
+               groups.doc(idRoom).update({
+                   lastMessage : mess.id
+              })
+            })
+    io.in(idRoom).emit(NEW_CHAT_MESSAGE_EVENT, {messageInfo:{...message, idMess}, userInfo})
+  })
+  socket.on("disconnect", () => {
+    console.log(`${socket.id} disconnected`);
+    socket.leave(idRoom);
+  });
 })
 
 app.use('/user',userRoute)

@@ -3,14 +3,16 @@ import './leftFunc.css'
 import Avatar from 'react-avatar'
 import {UserContext} from '../../context/user.context'
 import Axios from 'axios'
+import socketIOClient from "socket.io-client"
 
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
 
 function RecentlyChat() {
   const {listGroups, setFisrtPage, 
-    setCurrentRoom, setMessagesCurrentGroup, setUsersCurrentGroup} = useContext(UserContext)
+    setCurrentRoom, setMessagesCurrentGroup, setUsersCurrentGroup, userInfo, currentRoom} = useContext(UserContext)
   const setContextRoomChat = async(index)=>{
+    
     await Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(async res =>{
       await setCurrentRoom(res.data)
     })
@@ -19,6 +21,7 @@ function RecentlyChat() {
         await setUsersCurrentGroup(res.data.dataUsersGroup)
     })
     await setFisrtPage(false)
+   
   }
 
   let avatarConfig = {

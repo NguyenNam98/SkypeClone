@@ -99,6 +99,7 @@
     width: 1000px;
     height: 600px;
     position: absolute;
+    
 }
 .roomchat-navbar{
     width: 1000px;
@@ -197,6 +198,7 @@
     overflow-x: hidden;
     scroll-padding-bottom: 10%;
     margin-bottom: 20px;
+    transform: rotateX(180deg);
 }
 
 .roomchat-newmessage{
@@ -241,6 +243,7 @@
     width: 960px;
     position: relative;
     margin: 25px;
+    transform: rotateX(180deg);
 }
 .message-left{
     display: flex;
