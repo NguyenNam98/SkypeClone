@@ -1,5 +1,6 @@
 const database = require('../models/firebaseConnect')
-var users = database.db.collection('users')
+const users = database.db.collection('users')
+const groups = database.db.collection('groups')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
@@ -13,7 +14,6 @@ module.exports.getInfo = async function(req, res){
     if (user.empty) {
         res.status(403).send('not found')
       }  
-      
       user.forEach(doc => {
         if(doc.data().password='12345'){
             sample = doc.data()
@@ -269,5 +269,51 @@ module.exports.checkLogin = async function(req, res){
     })
   } catch (error) {
     return res.status(403).send('Erorr request !')
+  }
+}
+
+module.exports.searchUserByName = (req, res) =>{
+
+
+}
+module.exports.relatedUser = async(req, res) => {
+  try {
+    
+    const idUser = req.idUser
+    const idGroup = req.params.idGroup
+    let groupsOfUser =[]
+    let idUsersRelated = []
+    let userRelated =[]
+
+    await users.doc(idUser).get().then(item =>{
+      groupsOfUser = item.data().groups
+    })
+
+    for (let index = 0; index < groupsOfUser.length; index++) {
+      if(groupsOfUser[index] !== idGroup){
+        await groups.doc(groupsOfUser[index]).get().then(item =>{
+          
+          idUsersRelated = [...idUsersRelated,...item.data().users]
+        })
+      }
+    }
+    idUsersRelated = idUsersRelated.filter((ele, index)=>{
+      return idUsersRelated.indexOf(ele) == index
+    })
+    for (let i = 0; i < idUsersRelated.length; i++) {
+      await users.doc(idUsersRelated[i]).get().then(item =>{
+        let dataUser = {
+          id:item.id,
+          username:item.data().username,
+          avatar: item.data().avatar
+        }
+        userRelated.push(dataUser)
+      })
+    }
+
+  return res.status(200).send(userRelated)
+  } catch (error) {
+    
+    return res.status(404).send('Bad request!!!')
   }
 }

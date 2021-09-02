@@ -18,7 +18,7 @@ const port = process.env.REACT_APP_PORT || 8080
 
 function HomePage (props) {
   Axios.defaults.withCredentials = true;
-  const {userInfo, setUserInfo,firstPage,setToListGroups , listGroups} = useContext(UserContext)
+  const {setUserInfo,firstPage,setToListGroups, changeLastMess} = useContext(UserContext)
   
   useEffect(() => {
         const interval = setInterval(() => {
@@ -52,9 +52,7 @@ function HomePage (props) {
           }
       })
       .then((res) => {
-          setUserInfo(res.data.userData)
-          // props.history.push('/')
-          // window.location.reload(false);  
+          setUserInfo(res.data.userData) 
       })
       .catch(err =>{
           setUserInfo({})
@@ -71,7 +69,7 @@ function HomePage (props) {
         // props.history.push('/login')
         // window.location.reload(false);
      })
-    }, []);
+    }, [changeLastMess]);
 
     return (
       <div className = 'homepage'>

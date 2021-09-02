@@ -46,7 +46,7 @@ const START_TYPING_MESSAGE_EVENT = "START_TYPING_MESSAGE_EVENT";
 const STOP_TYPING_MESSAGE_EVENT = "STOP_TYPING_MESSAGE_EVENT";
 
 io.on('connection', (socket) => {
-  console.log(`${socket.id} connected`);
+ 
   const {idRoom, avatar, gmail, idUser, username} = socket.handshake.query
 
   socket.join(idRoom)
@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
   });
 })
 
-app.use('/user',userRoute)
+app.use('/user',authMiddleWare.authMiddle,userRoute)
 app.use('/message',messageRoute)
 app.use('/group',authMiddleWare.authMiddle, groupRoute)
 

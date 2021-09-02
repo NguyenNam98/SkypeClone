@@ -3,6 +3,7 @@ import '../rightFunc.css'
 import Message from './message'
 import socketIOClient from "socket.io-client"
 import {UserContext} from '../../../context/user.context'
+import AddUserToGroup from "./addUserToGroup"
 
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
@@ -11,14 +12,19 @@ const ENDPOINT =`http://${host}:${port}`
 const NEW_CHAT_MESSAGE_EVENT = "NEW_CHAT_MESSAGE_EVENT";
 
 function RoomChat() {
-  const messagesEndRef = useRef(null)
-  const {currentRoom, userInfo, messagesOfCurrentGroup,
-     usersCurrentGroup, setMessagesCurrentGroup} = useContext(UserContext)
-  const [message, setMessage] = useState('')
- //const [dataMess, setDataMess] = useState([])
   const socketRef = useRef()
+
+  const { currentRoom, userInfo, messagesOfCurrentGroup,
+          usersCurrentGroup, setMessagesCurrentGroup,
+          setChangeLastMess
+    } = useContext(UserContext)
+  
+  const [message, setMessage] = useState('')
+  const [showAddUser, setShowAddUser] = useState(false)
+  const setCloseAddUser = ()=>{
+    setShowAddUser(false)
+  }
   useEffect(() => {
-    //messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
     socketRef.current = socketIOClient(ENDPOINT, {
       query : {
         idRoom : currentRoom.idGroup,
@@ -32,11 +38,11 @@ function RoomChat() {
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (mes) =>{
       setMessagesCurrentGroup(messagesOfCurrentGroup =>[ mes.messageInfo, ...messagesOfCurrentGroup ])
     })
+
     return () => {
       setMessagesCurrentGroup([])
       socketRef.current.disconnect();
     };
-
   }, [currentRoom, userInfo])
 
   const sendMessage = (e)=>{
@@ -46,14 +52,23 @@ function RoomChat() {
         body : message,
         userInfo 
       })
-      //messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
       setMessage('')
     }
   }
-
+  useEffect(() => {
+    setChangeLastMess(changeLastMess =>!changeLastMess)
+  }, [messagesOfCurrentGroup])
   return (
     <div className = 'roomchat'>
       <div className = ' roomchat-container'>
+          {
+            showAddUser === true &&
+            <AddUserToGroup 
+              setCloseAddUser ={setCloseAddUser}
+              idCurrentRoom ={currentRoom.idGroup}
+            
+            />
+          }
             <div className = 'roomchat-navbar'>
               <div className = 'roomchat-navbar-left'>
                 <div className = 'roomchat-left-name'>{currentRoom.nameGroup}</div>
@@ -76,7 +91,9 @@ function RoomChat() {
               <div className = 'roomchat-navbar-right'>
                 <i className="fas fa-video nav-icon"></i>
                 <i className="fas fa-phone-alt nav-icon"></i>
-                <i className="fas fa-user-plus nav-icon"></i>
+                <i className="fas fa-user-plus nav-icon"
+                   onClick={()=>{setShowAddUser(true)}}
+                ></i>
               </div>
           </div>
           <div className = 'roomchat-message' >
@@ -117,7 +134,6 @@ function RoomChat() {
                   )
               })
             }
-           <div ref={messagesEndRef} />
           </div>
           <div className = 'roomchat-newmessage'>
             <div className = 'newmessage-left'>

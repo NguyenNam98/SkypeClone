@@ -53,7 +53,7 @@ module.exports.addMember = async function( req, res){
         res.status(403).send('error request')
     }
 }
-module.exports.getGroup = async (req, res)=>{
+module.exports.getListGroup = async (req, res)=>{
  try {
     const idUser = req.idUser
     let groupsOfUser = []
@@ -82,19 +82,11 @@ module.exports.getGroup = async (req, res)=>{
                     usernameLastMessage = ex.data().username
                 })
                 let date = item.data().timeCreated.toDate()
-                let now = new Date().getTime()
-                if((now - date.getTime())/86400000 < 1){
-                    date = new Date(date).toLocaleString('en-US', { hour: 'numeric', hour12: true })
-                }else if((now - date)/86400000 < 7){
-                    date = new Date(date).toLocaleString('en-us', {  weekday: 'long' }).slice(0,3)
-                }else{
-                    date = new Date(date).toLocaleString('en-us', {year: "numeric",month: "2-digit",day: "numeric" })
-                }
-
                 dataGrUser[i]= {lastMessageInfo:{text : item.data().text ,timeCreated: date, idUser :item.data().idUser ,usernameLastMessage} , ...dataGrUser[i]}
             })
         }
     }
+    dataGrUser = dataGrUser.sort((a, b) => b.lastMessageInfo.timeCreated - a.lastMessageInfo.timeCreated)
     return res.status(200).send(dataGrUser)
  }catch (error) {
     return res.status(404).send('Error request')
@@ -113,4 +105,25 @@ module.exports.dataOneGroup = async (req, res)=>{
         return res.status(404).send('Error request')
     }
 
+}
+module.exports.addListMember = async (req, res)=>{
+    try {
+        const idUser = req.idUser
+        const idGroup = req.params.idGroup
+        const newMembers = req.body.ids
+        console.log(newMembers);
+        for (let i = 0; i < newMembers.length; i++) {
+            await groups.doc(idGroup).update({
+                "users" : admin.firestore.FieldValue.arrayUnion(newMembers[i]),
+                "numberOfUser": admin.firestore.FieldValue.increment(+1)
+            })
+            await users.doc(newMembers[i]).update({
+                "groups" :admin.firestore.FieldValue.arrayUnion(idGroup)
+            })
+        }
+        return res.status(200).send('Update successfull !')
+        
+    } catch (error) {
+        return res.status(404).send('Update unsuccessfull !')
+    }
 }

@@ -302,3 +302,115 @@
     background-color: rgb(219, 244, 253);
     
 }
+/* add user component style*/
+.add-user{
+    width: 1300px;
+    height: 100vh;
+    position: absolute;
+    z-index: 3;
+}
+.add-user-over{
+    width: 1300px;
+    height: 100vh;
+    position: absolute;
+    opacity: 0.4;
+    z-index: 2;
+    background-color: #444;
+}
+.add-user-container{
+    border: 1px solid #ccc;
+    /* border-top-right-radius: 10px; */
+    box-shadow: -2px 2px 8px #888888;
+    width: 420px;
+    height: 500px;
+    margin-top: 50px;
+    margin-left: 240px;
+    background-color: #fff;
+    z-index: 4;
+    position: relative;
+    padding: 15px;
+    
+}
+.add-user-header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+}
+.add-user-header i{
+    cursor: pointer;
+}
+.add-user-title{
+    padding-left: 150px;
+    font-size: 20px;
+    font-weight: 700;
+}
+.add-user-search{
+    display: flex;
+    align-items: center;
+    color: #333;
+    
+}
+.add-user-search i{
+    cursor: pointer;
+}
+.add-user-search input{
+    outline: none;
+    border: none;
+    padding-left: 10px;
+    
+}
+.add-user-suggest{
+    margin-top: 10px;
+    height: 320px;      
+}
+.add-user-temp{
+    height: 40px;
+    display: flex;
+    margin-top: 10px;
+    justify-content: flex-start;
+}
+.add-user-suggest-title{
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+}
+.add-user-suggest-list{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 300px;
+}
+.add-user-btn{
+    border-radius: 18px;
+    margin-top: 25px;
+    width: 120px;
+    height: 40px;
+    background-color: #00aff0;
+    text-align: center;
+    margin-left: 150px;
+    cursor: pointer;
+}
+.add-user-btn-text{
+    padding-top: 7px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+.add-user-user{
+    display: flex;
+    height: 40px;
+    margin-top: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+.add-user-info{
+    margin-left: 10px;
+    width: 320px;
+    height: 44px ;
+    border-bottom: 1px solid #999;
+}
+.add-user-info-name{
+    padding-top: 10px;
+    font-size: 18px;
+    font-weight: 700;
+}

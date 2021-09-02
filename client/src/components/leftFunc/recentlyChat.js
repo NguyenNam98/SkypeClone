@@ -1,18 +1,27 @@
-import React,{useContext, useEffect, useState} from 'react'
+import React,{useContext, useEffect} from 'react'
 import './leftFunc.css'
 import Avatar from 'react-avatar'
 import {UserContext} from '../../context/user.context'
 import Axios from 'axios'
-import socketIOClient from "socket.io-client"
 
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
-
+function sortTime (date){
+    date = new Date(date)
+    let now = new Date().getTime()
+    if((now - date.getTime())/86400000 < 1){
+        date = new Date(date).toLocaleString('en-US', {minute:'numeric', hour: 'numeric', hour12: true })
+    }else if((now - date)/86400000 < 7){
+        date = new Date(date).toLocaleString('en-us', {  weekday: 'long' }).slice(0,3)
+    }else{
+        date = new Date(date).toLocaleString('en-us', {year: "numeric",month: "2-digit",day: "numeric" })
+    }
+  return date
+}
 function RecentlyChat() {
   const {listGroups, setFisrtPage, 
-    setCurrentRoom, setMessagesCurrentGroup, setUsersCurrentGroup, userInfo, currentRoom} = useContext(UserContext)
+    setCurrentRoom, setMessagesCurrentGroup, setUsersCurrentGroup} = useContext(UserContext)
   const setContextRoomChat = async(index)=>{
-    
     await Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(async res =>{
       await setCurrentRoom(res.data)
     })
@@ -51,7 +60,7 @@ function RecentlyChat() {
                                 <div className = 'recentlychat-message'>{!item.lastMessageInfo ? '':item.lastMessageInfo.text}</div>
                             </div>
                         </div>
-                        <div className = 'recentlychat-time'>{!item.lastMessageInfo ? '0:00':item.lastMessageInfo.timeCreated}</div>
+                        <div className = 'recentlychat-time'>{!item.lastMessageInfo ? '0:00': sortTime(item.lastMessageInfo.timeCreated)}</div>
                     </div>
                 )
             })}
