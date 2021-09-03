@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 module.exports.authMiddle = async function (req, res, next){
     try{
         const accessTokenHeader = req.cookies.x_authorization
-
         if(!accessTokenHeader){
             return res.status(404).send('Error authority')
         }

@@ -11,13 +11,12 @@ function AddUserToGroup(props) {
   const [userSearch, setUserSearch] = useState('')
   const [tempAddUser, settempAddUser] = useState([])
 
-  const handleSearch =(e)=>{
+  const handleSearch = (e)=>{
     // e.preventDefault();
     setUserSearch(e.target.value)
   }
   const handleTempAddUser = (id)=>{
     // console.log(tempAddUser.includes(id))
-    console.log(tempAddUser);
     usersSuggested.forEach(item =>{
       if(item.id === id && !tempAddUser.includes(item)){
         settempAddUser(tempAddUser => [...tempAddUser,item])
@@ -29,12 +28,25 @@ function AddUserToGroup(props) {
     tempAddUser.forEach(item =>{
       ids.push(item.id)
     })
-    let data ={
+    let data = {
       ids
     }
-    Axios.post(`http://${host}:${port}/group/addListMember/${idGroup}`,data).then(res =>{
-     console.log(res);
+    Axios.post(`http://${host}:${port}/group/addListMember/${idGroup}`, data).then(res =>{
+      let newMembers =[]
+      usersSuggested.forEach(item =>{
+        data.ids.forEach(temp =>{
+          if(item.id === temp){
+            newMembers.push(item)
+          }
+        })
+      })
+      props.funcSetAddedUser(newMembers)
+      setTimeout(()=>{
+        props.setCloseAddUser()
+      }, 3000)
+      alert('Successfull adding new member !')
     })
+  
   }
 
   const avatarConfig = {
@@ -70,10 +82,11 @@ function AddUserToGroup(props) {
             <div className = 'add-user-temp'>
               {
                 tempAddUser.map(item =>{
+              
                   return(
-                    <>
-                    <Avatar {...avatarConfig} name = {item.username}/>
-                    </>
+                    <div key={item.id}>
+                    <Avatar {...avatarConfig} name = {item.username} />
+                    </div>
                   )
                 })
               }

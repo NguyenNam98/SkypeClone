@@ -39,7 +39,7 @@ app.use(cookieParser('michael98'))
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-const USER_JOIN_CHAT_EVENT = "USER_JOIN_CHAT_EVENT";
+const NEW_USER_JOIN_CHAT_EVENT = "NEW_USER_JOIN_CHAT_EVENT";
 const USER_LEAVE_CHAT_EVENT = "USER_LEAVE_CHAT_EVENT";
 const NEW_CHAT_MESSAGE_EVENT = "NEW_CHAT_MESSAGE_EVENT";
 const START_TYPING_MESSAGE_EVENT = "START_TYPING_MESSAGE_EVENT";
@@ -66,13 +66,36 @@ io.on('connection', (socket) => {
       username
     }
     await messages.add(message).then(mess =>{
-              idMess = mess.id
+              idMessage = mess.id
                groups.doc(idRoom).update({
                    lastMessage : mess.id
               })
             })
-    io.in(idRoom).emit(NEW_CHAT_MESSAGE_EVENT, {messageInfo:{...message, idMess}, userInfo})
+    io.in(idRoom).emit(NEW_CHAT_MESSAGE_EVENT, {messageInfo:{...message, idMessage}, userInfo})
   })
+  socket.on(NEW_USER_JOIN_CHAT_EVENT, async data =>{
+    console.log('hêheh');
+    let newMembers = data.body
+    const userAdded = data.userInfo
+    const date= new Date()
+    let newMessages = []
+    for (let i = 0; i < newMembers.length; i++) {
+      let idMessage =''
+      let message = {
+        text: `${userAdded.username} added ${newMembers[i].username} to this conversation`,
+        timeCreated:date,
+        idUser: '',
+        idGroup : idRoom,
+      }
+      await messages.add(message).then(mess =>{
+        idMessage = mess.id
+      })
+      newMembers.push({...message, idMessage})
+    }
+    console.log('dđ',newMessages);
+    io.in(idRoom).emit(NEW_USER_JOIN_CHAT_EVENT, newMessages )
+  })
+  //disconnect room
   socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
     socket.leave(idRoom);

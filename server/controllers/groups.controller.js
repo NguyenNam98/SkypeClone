@@ -15,7 +15,7 @@ module.exports.createGroup = async function( req, res){
 
     if(check.exists){
         let groupData = {
-            'numberUsers':1,
+            'numberOfUser':1,
             'nameGroup': req.body.name,
             'timeCreated': new Date(),
             'createdBy':idUser, 
@@ -24,6 +24,17 @@ module.exports.createGroup = async function( req, res){
         await groups.add(groupData).then(doc =>{idGroup = doc.id})
         await user.update({
             "groups" :admin.firestore.FieldValue.arrayUnion(idGroup)
+        })
+        let newMess ={
+            text:'add new user', 
+            timeCreated : new Date(),
+            idGroup :idGroup,
+            idUser: idUser
+        }
+        await messages.add(newMess).then(item =>{
+            groups.doc(idGroup).update({
+                lastMessage:item.id
+            })
         })
         res.status(200).send('create successfull !')
     }else{
@@ -82,6 +93,7 @@ module.exports.getListGroup = async (req, res)=>{
                     usernameLastMessage = ex.data().username
                 })
                 let date = item.data().timeCreated.toDate()
+
                 dataGrUser[i]= {lastMessageInfo:{text : item.data().text ,timeCreated: date, idUser :item.data().idUser ,usernameLastMessage} , ...dataGrUser[i]}
             })
         }
@@ -89,6 +101,7 @@ module.exports.getListGroup = async (req, res)=>{
     dataGrUser = dataGrUser.sort((a, b) => b.lastMessageInfo.timeCreated - a.lastMessageInfo.timeCreated)
     return res.status(200).send(dataGrUser)
  }catch (error) {
+    console.log(error);
     return res.status(404).send('Error request')
  }
 }
@@ -102,6 +115,7 @@ module.exports.dataOneGroup = async (req, res)=>{
         })
         
     } catch (error) {
+        console.log(error);
         return res.status(404).send('Error request')
     }
 
@@ -111,7 +125,6 @@ module.exports.addListMember = async (req, res)=>{
         const idUser = req.idUser
         const idGroup = req.params.idGroup
         const newMembers = req.body.ids
-        console.log(newMembers);
         for (let i = 0; i < newMembers.length; i++) {
             await groups.doc(idGroup).update({
                 "users" : admin.firestore.FieldValue.arrayUnion(newMembers[i]),
@@ -124,6 +137,7 @@ module.exports.addListMember = async (req, res)=>{
         return res.status(200).send('Update successfull !')
         
     } catch (error) {
+        console.log(error);
         return res.status(404).send('Update unsuccessfull !')
     }
 }

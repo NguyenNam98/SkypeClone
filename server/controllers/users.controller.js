@@ -284,6 +284,7 @@ module.exports.relatedUser = async(req, res) => {
     let groupsOfUser =[]
     let idUsersRelated = []
     let userRelated =[]
+    let idUserOfCurrentGroup =[]
 
     await users.doc(idUser).get().then(item =>{
       groupsOfUser = item.data().groups
@@ -292,14 +293,18 @@ module.exports.relatedUser = async(req, res) => {
     for (let index = 0; index < groupsOfUser.length; index++) {
       if(groupsOfUser[index] !== idGroup){
         await groups.doc(groupsOfUser[index]).get().then(item =>{
-          
           idUsersRelated = [...idUsersRelated,...item.data().users]
         })
+      }else{
+        await groups.doc(groupsOfUser[index]).get().then(item =>{
+          idUserOfCurrentGroup = [...item.data().users]
+        }) 
       }
     }
     idUsersRelated = idUsersRelated.filter((ele, index)=>{
-      return idUsersRelated.indexOf(ele) == index
+      return idUsersRelated.indexOf(ele) === index
     })
+    idUsersRelated = idUsersRelated.filter(x => !idUserOfCurrentGroup.includes(x));
     for (let i = 0; i < idUsersRelated.length; i++) {
       await users.doc(idUsersRelated[i]).get().then(item =>{
         let dataUser = {
@@ -310,7 +315,6 @@ module.exports.relatedUser = async(req, res) => {
         userRelated.push(dataUser)
       })
     }
-
   return res.status(200).send(userRelated)
   } catch (error) {
     
