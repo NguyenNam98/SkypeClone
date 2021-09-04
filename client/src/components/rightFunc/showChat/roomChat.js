@@ -32,9 +32,7 @@ function RoomChat() {
       body : users,
       userInfo 
     })
-    socketRef.current.on(NEW_USER_JOIN_CHAT_EVENT, data =>{
-      setMessagesCurrentGroup(messagesOfCurrentGroup =>[ ...data, ...messagesOfCurrentGroup ])
-    })
+ 
   }
 
   useEffect(() => {
@@ -51,7 +49,10 @@ function RoomChat() {
       setMessagesCurrentGroup(messagesOfCurrentGroup =>[ mes.messageInfo, ...messagesOfCurrentGroup ])
       //console.log(messagesOfCurrentGroup);
     })
-    
+    socketRef.current.on(NEW_USER_JOIN_CHAT_EVENT, data =>{
+      setMessagesCurrentGroup(messagesOfCurrentGroup =>[data, ...messagesOfCurrentGroup ])
+     
+    })
 
     return () => {
       //setMessagesCurrentGroup([])
@@ -137,10 +138,11 @@ function RoomChat() {
                                 dataUser = {dataUser}                                      
                         />
                     }
+
                     {
                       !item.idUser &&
-                      <div className =''>
-
+                      <div className ='noticed-add-user'>
+                        <div>{item.text}</div>
                       </div>
                     }
                   </div>

@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
     const userAdded = data.userInfo
     const date= new Date()
 
-    newMessages = newMembers.map( item =>{
+    newMessages = newMembers.map( async item =>{
       let idMessage = ''
       let message = {
         text: `${userAdded.username} added ${item.username} to this conversation`,
@@ -86,12 +86,20 @@ io.on('connection', (socket) => {
         idUser: '',
         idGroup : idRoom,
       }
-      return {message}
-    })
-
-
+      await messages.add(message).then(mess =>{
+        idMessage = mess.id
+      })
      
-    io.in(idRoom).emit(NEW_USER_JOIN_CHAT_EVENT, newMessages )
+      return {...message, idMessage}
+    })
+    let tempNewMesseage = []
+    await newMessages.forEach( async element => {
+      await element.then( value => {
+        io.in(idRoom).emit(NEW_USER_JOIN_CHAT_EVENT, value )
+      })
+    })
+    console.log( tempNewMesseage);
+    
   })
   //disconnect room
   socket.on("disconnect", () => {

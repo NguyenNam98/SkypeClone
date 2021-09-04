@@ -11,6 +11,10 @@ module.exports.createGroup = async function( req, res){
     const idUser = req.idUser
     const user = await users.doc(idUser)
     const check = await user.get();
+    let username = ''
+    await user.get().then(item =>{
+        username = item.data().username
+    })
     var idGroup=''
 
     if(check.exists){
@@ -26,7 +30,7 @@ module.exports.createGroup = async function( req, res){
             "groups" :admin.firestore.FieldValue.arrayUnion(idGroup)
         })
         let newMess ={
-            text:'add new user', 
+            text:`${username} has created this group`, 
             timeCreated : new Date(),
             idGroup :idGroup,
             idUser: idUser

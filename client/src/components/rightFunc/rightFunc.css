@@ -414,3 +414,9 @@
     font-size: 18px;
     font-weight: 700;
 }
+.noticed-add-user{
+    text-align: center;
+    transform: rotateX(180deg);
+    font-size: 14px;
+    color: #444;
+}
