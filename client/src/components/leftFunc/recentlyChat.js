@@ -6,6 +6,7 @@ import Axios from 'axios'
 
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
+
 function sortTime (date){
     date = new Date(date)
     let now = new Date().getTime()
@@ -18,14 +19,17 @@ function sortTime (date){
     }
   return date
 }
+
 function RecentlyChat() {
   const {listGroups, setFisrtPage, 
     setCurrentRoom, setMessagesCurrentGroup, setUsersCurrentGroup} = useContext(UserContext)
   const setContextRoomChat = async(index)=>{
-    await Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`).then(async res =>{
+    await Axios.get(`http://${host}:${port}/group/dataOneGroup/${index}`)
+    .then(async res =>{
       await setCurrentRoom(res.data)
     })
-    await Axios.get(`http://${host}:${port}/message/dataRoomChat/${index}`).then(async res =>{
+    await Axios.get(`http://${host}:${port}/message/dataRoomChat/${index}`)
+    .then(async res =>{
         await setMessagesCurrentGroup(res.data.messagesGroup)
         await setUsersCurrentGroup(res.data.dataUsersGroup)
     })
