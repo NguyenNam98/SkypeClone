@@ -1,15 +1,20 @@
-import React ,{useState} from 'react'
+import React ,{useState, useContext} from 'react'
 import './leftFunc.css'
 import Avatar from 'react-avatar'
-import avatarLink from '../../public/avatar/avatar-test.jpg'
 import AccountInfo from './userInfo/accountInfo'
+import {UserContext} from '../../context/user.context'
 
 function UserInfo () {
   const [openAccountInfo, setAccountInfo ] = useState(false)
-  const setCloseAccountInfo =() => { setAccountInfo(openAccountInfo => !openAccountInfo)
+  const setCloseAccountInfo =() => 
+  { 
+    setAccountInfo(openAccountInfo => !openAccountInfo)
   }
-  let userName = 'nguyennam'
+  const { userInfo} = useContext(UserContext)
+  
+  let userName = userInfo.username
   let money = 1818181
+  const avatarUrl = userInfo.avatar || 'Michael Nam'
   let avatarConfig = {
     round :true,
     size : '36px'
@@ -17,11 +22,15 @@ function UserInfo () {
   return (
     <div className = 'userinfo'>
       {
-        openAccountInfo === true && <AccountInfo setCloseAccountInfo ={setCloseAccountInfo} openAccountInfo = {openAccountInfo}/>
+        openAccountInfo === true && 
+        <AccountInfo 
+          setCloseAccountInfo ={setCloseAccountInfo} 
+          openAccountInfo = {openAccountInfo}
+        />
       }
       <div className = 'userinfo-container'>
         <div className = 'userinfo-left'>
-          <Avatar {...avatarConfig} src = {avatarLink}  onClick ={setCloseAccountInfo}/>
+          <Avatar {...avatarConfig}  onClick ={setCloseAccountInfo} name={avatarUrl }/>
           <div className = 'userinfo-username'  onClick ={setCloseAccountInfo}>{userName} </div>
           <div className = 'userinfo-money'>${money}</div>
         </div>

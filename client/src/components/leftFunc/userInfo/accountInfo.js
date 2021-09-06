@@ -1,14 +1,20 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import '../leftFunc.css'
 import Avatar from 'react-avatar'
 import avatarLink from '../../../public/avatar/avatar-test.jpg'
 import ShareStory from './shareStory'
+import {UserContext} from '../../../context/user.context'
 
 function AccountInfo(props) {
-  const userInfo ={username :'Nguyễn Nam', gmail :'16522665@gmail.com.vn'}
+  // const userInfo ={username :'Nguyễn Nam', gmail :'16522665@gmail.com.vn'}
 
   const [ accountStatus, setAccountStatus] = useState(false)
-  const closeAccountStatus =() => { setAccountStatus(accountStatus => !accountStatus)}
+  const closeAccountStatus =() => 
+  { 
+    setAccountStatus(accountStatus => !accountStatus)
+  }
+  const { userInfo} = useContext(UserContext)
+  const {username, gmail} = userInfo
 
   const [numberStatus, setNumberStatus] = useState(1)
   const [shareStory, setShareStory] = useState(false)
@@ -36,8 +42,8 @@ function AccountInfo(props) {
                     <Avatar {...avatarConfig} src = {avatarLink}/>
                   </div>
                   <div className ='accountInfo-user-right'>
-                      <div className = 'accountInfo-user-name'>{userInfo.username}</div>
-                      <div className = 'accountInfo-user-gmail'>{userInfo.gmail}</div>
+                      <div className = 'accountInfo-user-name'>{username}</div>
+                      <div className = 'accountInfo-user-gmail'>{gmail}</div>
                       <a href='https://account.microsoft.com/'>Tài khoản microsoft của tôi</a>
                   </div>
               </div>

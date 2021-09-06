@@ -23,7 +23,6 @@ function RoomChat() {
   const [message, setMessage] = useState('')
   const [showAddUser, setShowAddUser] = useState(false)
 
-
   const setCloseAddUser = ()=>{
     setShowAddUser(false)
   }
