@@ -1,10 +1,12 @@
 const database = require('../models/firebaseConnect')
 const users = database.db.collection('users')
 const groups = database.db.collection('groups')
+const tempGmailCollection = database.db.collection('verifyUser')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
 const rndToken = require('rand-token')
+const mailSender = require('./verifyMail')
 
 //const urlAvatar = 'https://res.cloudinary.com/dsweb19ql/image/upload/v1629127734/1_jsdzla.jpg'
 
@@ -24,46 +26,77 @@ module.exports.getInfo = async function(req, res){
 }
 
 module.exports.createUser = async function(req, res){
-  let existPhone = false
-  const phone = req.body.phoneNumber
   const gmail = req.body.gmail
-  await users.get().then(snap=>{
-    snap.forEach(doc =>{
-      if(!phone && doc.data().gmail === gmail ){
-        existPhone = true
-      }else if(doc.data().phoneNumber === phone && doc.data().phoneNumber !== undefined ){
-        existPhone = true
-      }
-    })
-  })
-  if(existPhone === true){
-    res.status(403).send('unsuccessfull add user')
-  }else{
-    await bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-      var userData
-      if(!phone){
-        userData ={
-          gmail:req.body.gmail,
-          username: '',
-          password:hash,
-          avatar:''
-        }
-      }else{
-        userData ={
-          phoneNumber:req.body.phoneNumber,
-          username: '',
-          password:hash,
-          avatar:''
-        }
-      }
-      users.add(userData)
-    });
-  
-    res.status(200).send(' add user successfull')
-  }
-  
-}
+  const password = req.body.password
+  const code = req.body.code
 
+  await tempGmailCollection.where("gmail",'==', gmail).get().then(async item =>{
+    let tempUser = item.docs[0]
+    let time = new Date(tempUser.data().timeCodeCreate.toDate()).getTime()
+    let now = new Date().getTime()
+    if(tempUser.data().code !== code){
+      return res.status(404).send('code invalid !')
+    }else 
+        if((time -now)/86400000 > 1){
+           return res.status(404).send('code invalid !')
+        }else{
+           bcrypt.hash(password, saltRounds, function(err, hash) {
+                  let userData ={
+                    gmail,
+                    username: 'Michael8',
+                    password:hash,
+                    avatar:'',
+                  }
+                users.add(userData)
+              });
+              await tempGmailCollection.doc(tempUser.id).update({
+                verify: true
+              })
+             return res.status(200).send('add user successfull')
+        }
+  })  
+}
+module.exports.verifyGmail = async (req, res) =>{
+  try {
+    let date = new Date()
+    const code = rndToken.generate(6) // random string 6 digits
+    const gmail = req.body.gmail
+    
+     await tempGmailCollection.where("gmail",'==', gmail).get()
+    .then(async item =>{
+        if(!item.empty){
+          let tempUser = item.docs[0]
+     
+          if(tempUser.data().verify){
+            return res.status(403).send(' gmail already exists !')
+          }else{
+            // mailSender.sendMail(gmail, code)
+            await tempGmailCollection.doc(tempUser.id).update({
+              'code' : code,
+              'timeCodeCreate' : date
+            })
+              return res.status(200).send('verify code ?')
+          }
+        }
+    })
+    .catch(async err =>{
+      // mailSender.sendMail(gmail, code)
+      let data = {
+        gmail,
+        code,
+        timeCodeCreate: date,
+        verify: false
+   
+      }
+      await tempGmailCollection.add(data)
+      return res.status(200).send('verify code ?')
+    })
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(404).send('Bad request')
+  }
+}
 module.exports.getGroupsInfoUser = async function(req, res){
   if(!req.body){
     res.status(404).send('Not found user')
