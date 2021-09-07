@@ -10,6 +10,7 @@ router.post('/create', userController.createUser)
 router.post('/auth/login', userController.login)
 router.post('/auth/refreshToken', userController.refreshToken)
 router.post('/auth/checkLogin', userController.checkLogin)
+router.post('/auth/verify', userController.verifyGmail)
 
 // router.post('/groups/create/:idUser',userController.createGroup)
 

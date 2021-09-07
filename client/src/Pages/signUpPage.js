@@ -29,9 +29,9 @@ function SignUpPage(props) {
     }
     const [error, setError] = useState('')
     const validateGmail =()=>{
-        let formatGmail = new RegExp(/^[\w.+\-]+@gmail\.com$/)
+        let formatGmail = new RegExp(/^[\w.+\-]+@gmail.com$/)
 
-        if(!gmail || !formatGmail.test(gmail)){
+        if(!gmail){
             setError(' Enter the email address in the format someone@example.com.')
             setWrongAlertName(true)
         }else{    
@@ -69,14 +69,16 @@ function SignUpPage(props) {
               }
             }
          
-            Axios.post(`http://${host}:${port}/user/create`, userData).then(res =>{
+            Axios.post(`http://${host}:${port}/user/auth/verify`, userData).then(res =>{
                 setWrongAlertPass(false)
-                alert(`created successfull account`)
-                props.history.push('/login')
+                let pass = encodeURIComponent(password)
+                let mail = encodeURIComponent(gmail)
+                let params = encodeURIComponent()
+                props.history.push(`/register/verify/${mail}/${pass}`)
                 window.location.reload(false);
               
             }).catch(err=>{
-                alert('Unsuccessfull create account')
+                console.log(err);
             })
            
 

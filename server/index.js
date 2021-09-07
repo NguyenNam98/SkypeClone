@@ -40,10 +40,9 @@ app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 const NEW_USER_JOIN_CHAT_EVENT = "NEW_USER_JOIN_CHAT_EVENT";
-const USER_LEAVE_CHAT_EVENT = "USER_LEAVE_CHAT_EVENT";
+
 const NEW_CHAT_MESSAGE_EVENT = "NEW_CHAT_MESSAGE_EVENT";
-const START_TYPING_MESSAGE_EVENT = "START_TYPING_MESSAGE_EVENT";
-const STOP_TYPING_MESSAGE_EVENT = "STOP_TYPING_MESSAGE_EVENT";
+
 
 io.on('connection', (socket) => {
  
@@ -108,8 +107,8 @@ io.on('connection', (socket) => {
   });
 })
 
-app.use('/user',authMiddleWare.authMiddle,userRoute)
-app.use('/message',messageRoute)
+app.use('/user',userRoute)
+app.use('/message',authMiddleWare.authMiddle,messageRoute)
 app.use('/group',authMiddleWare.authMiddle, groupRoute)
 
 httpServer.listen(port);
