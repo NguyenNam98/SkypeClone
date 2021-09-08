@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import { CookiesProvider } from 'react-cookie';
 import {UserProvider} from './context/user.context'
+import {SignupProvider} from './context/signup.context'
 import homePage from './Pages/homePage';
 import './app.css'
 import LoginPage from './Pages/loginPage';
@@ -16,6 +17,7 @@ import VerifyPage from './Pages/verifyPage';
     return (
       <CookiesProvider>
       <UserProvider>
+      <SignupProvider>
         <Router>
           <div className='app'>
             <Switch>
@@ -26,6 +28,7 @@ import VerifyPage from './Pages/verifyPage';
             </Switch>
           </div>
          </Router>
+      </SignupProvider>
       </UserProvider>
       </CookiesProvider>
     );
