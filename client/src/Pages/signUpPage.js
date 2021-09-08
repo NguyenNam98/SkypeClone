@@ -2,13 +2,14 @@ import React,{useState, useContext, useEffect} from 'react'
 import { withRouter } from "react-router-dom";
 import Axios from 'axios'
 import {UserContext} from '../context/user.context'
-
+import {SignupContext} from '../context/signup.context'
 const host = process.env.REACT_APP_HOST
 const port = process.env.REACT_APP_PORT || 8080
 
 function SignUpPage(props) {
     Axios.defaults.withCredentials = true;
     const {userInfo, setUserInfo} = useContext(UserContext)
+    const {setGmailToContext, setPasswordToContext} = useContext(SignupContext)
     const [passSide, setPassSide]= useState(false)
     const switchPassSide = ()=> {
         setPassSide(passSide => !passSide)
@@ -68,20 +69,19 @@ function SignUpPage(props) {
                 password:password
               }
             }
-         
+            setPasswordToContext(password)
+            setGmailToContext(gmail)
             Axios.post(`http://${host}:${port}/user/auth/verify`, userData).then(res =>{
                 setWrongAlertPass(false)
-                let pass = encodeURIComponent(password)
-                let mail = encodeURIComponent(gmail)
-                let params = encodeURIComponent()
-                props.history.push(`/register/verify/${mail}/${pass}`)
+                let params = encodeURIComponent(`gmail=password=verifyuser`)
+
+                props.history.push(`/register/verify`)
                 window.location.reload(false);
               
             }).catch(err=>{
+                alert('Unsuccessfull request!')
                 console.log(err);
             })
-           
-
         }
     }
     const changeShowPass =()=>{

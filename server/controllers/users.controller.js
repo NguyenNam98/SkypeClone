@@ -26,6 +26,7 @@ module.exports.getInfo = async function(req, res){
 }
 
 module.exports.createUser = async function(req, res){
+  console.log(req.body);
   const gmail = req.body.gmail
   const password = req.body.password
   const code = req.body.code
