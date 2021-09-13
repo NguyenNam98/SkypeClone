@@ -22,6 +22,8 @@ function RoomChat() {
   
   const [message, setMessage] = useState('')
   const [showAddUser, setShowAddUser] = useState(false)
+  const [fileMedia, setFileMedia] = useState()
+  const [mediaInput, setMediaInput] = useState(false)
 
   const setCloseAddUser = ()=>{
     setShowAddUser(false)
@@ -62,14 +64,40 @@ function RoomChat() {
   const sendMessage = (e)=>{
     if(e.keyCode === 13){
       if(!socketRef.current) return
-      socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
-        body : message,
+      if(mediaInput === false){
+        socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
+          contentType:'message',
+          body : message,
+          userInfo 
+        })
+        setMessage('')
+      }
+      else{
+        const formData = new FormData();
+        formData.append('File', fileMedia);
+        
+        socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
+        contentType: 'file',
+        body : fileMedia,
         userInfo 
-      })
-      setMessage('')
+        })
+        setMediaInput(false)
+      }
     }
   }
 
+  const handleGetFile =(e)=>{
+    setFileMedia(e.target.files[0])
+    setMediaInput(true)
+    
+  }
+  const sendMediaFile =(e)=>{
+
+    if(e.keyCode === 13){
+    
+     
+    }
+  }
   useEffect(() => {
     setChangeLastMess(changeLastMess =>!changeLastMess)
   }, [messagesOfCurrentGroup])
@@ -149,6 +177,16 @@ function RoomChat() {
               })
             }
           </div>
+          {
+            mediaInput === true && fileMedia!== undefined &&
+            <div className='roomchar-showmedia'>
+              <img src={URL.createObjectURL(fileMedia)} alt="dummy" width="100" height="100" />     
+              <i className="fas fa-times" onClick = {()=>{setFileMedia()}}>
+
+              </i>
+            </div>
+            
+          }
           <div className = 'roomchat-newmessage'>
             <div className = 'newmessage-left'>
               <i className="far fa-grin-hearts"></i>
@@ -160,10 +198,22 @@ function RoomChat() {
                   setMessage(e.target.value)
                 }}
               >
+                
               </input>
+              
             </div>
               <div className = 'newmessage-right'>
-                <i className="far fa-file-image"></i>
+                <label htmlFor='upload-button'>
+                 <i className="far fa-file-image"></i>
+                </label>
+                <input
+                  type="file"
+                  id="upload-button"
+                  style= {{ display: "none" }}
+                  onKeyDown ={sendMediaFile}
+                  onChange ={handleGetFile}
+                />
+                
                 <i className="far fa-address-card"></i>
                 <i className="fas fa-microphone-alt"></i>
                 <i className="fas fa-ellipsis-h"></i>

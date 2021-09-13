@@ -5,7 +5,6 @@ export const SignupContext= React.createContext();
 export function SignupProvider (props){
     const [gmail, setGmail] = useState('')
     const setGmailToContext =(gm) =>{
-            
             setGmail(gm)
     }
     const [password, setPassword] = useState('')

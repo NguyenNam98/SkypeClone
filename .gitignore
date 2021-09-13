@@ -4,3 +4,4 @@ server/models/config/firebaseKey.json
 server/node_modules
 client/.env
 server/.env
+server/upload
