@@ -5,6 +5,7 @@ const httpServer = require("http").createServer(app);
 const cookieParser = require('cookie-parser');
 const authMiddleWare = require('./middlewares/auth.middleware')
 const rndToken = require('rand-token')
+const fs = require('fs')
 
 const database = require('./models/firebaseConnect')
 var groups = database.db.collection('groups')
@@ -50,27 +51,33 @@ io.on('connection', (socket) => {
 
   socket.join(idRoom)
   socket.on(NEW_CHAT_MESSAGE_EVENT, async data => {
-    const date = new Date()
-    let  idMess = ''
-    const message = {
-          text: data.body,
-          timeCreated:date,
-          idUser: idUser,
-          idGroup : idRoom
-    }
-    const userInfo ={
-      avatar,
-      gmail, 
-      idUser, 
-      username
-    }
-    await messages.add(message).then(mess =>{
-              idMessage = mess.id
-               groups.doc(idRoom).update({
-                   lastMessage : mess.id
+    if (data.contentType ==='message'){
+      const date = new Date()
+      let  idMess = ''
+      const message = {
+            text: data.body,
+            timeCreated:date,
+            idUser: idUser,
+            idGroup : idRoom
+      }
+      const userInfo ={
+        avatar,
+        gmail, 
+        idUser, 
+        username
+      }
+      await messages.add(message).then(mess =>{
+                idMessage = mess.id
+                 groups.doc(idRoom).update({
+                     lastMessage : mess.id
+                })
               })
-            })
-    io.in(idRoom).emit(NEW_CHAT_MESSAGE_EVENT, {messageInfo:{...message, idMessage}, userInfo})
+      io.in(idRoom).emit(NEW_CHAT_MESSAGE_EVENT, {messageInfo:{...message, idMessage}, userInfo}) 
+    }else{
+      fs.writeFile(__dirname+"/upload/test.jpg", data.body, err =>{
+        console.log(err);
+      })
+    }
   })
   socket.on(NEW_USER_JOIN_CHAT_EVENT, async data =>{
     let newMembers = data.body
